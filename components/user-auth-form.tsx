@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { signIn } from "next-auth/react"
 import { useForm } from "react-hook-form"
@@ -29,6 +30,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [isGoogleLoading, setIsGoogleLoading] = React.useState<boolean>(false)
 
+  const router = useRouter()
 
   async function onSubmit(data: FormData) {
     setIsLoading(true)
@@ -36,7 +38,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     const signInResult = await signIn("credentials", {
       ...data,
       redirect: false,
-      callbackUrl: "/"
     })
 
     setIsLoading(false)
@@ -48,6 +49,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         variant: "destructive",
       })
     }
+
+    return router.push("/")
   }
 
   return (
