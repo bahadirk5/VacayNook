@@ -1,8 +1,15 @@
 import {
+  ChevronLeft,
+  ChevronRight,
+  Heart,
+  Laptop,
+  Loader2,
   LucideProps,
   Moon,
+  Star,
   SunMedium,
   Twitter,
+  User,
   type Icon as LucideIcon,
 } from "lucide-react"
 
@@ -11,6 +18,13 @@ export type Icon = LucideIcon
 export const Icons = {
   sun: SunMedium,
   moon: Moon,
+  heart: Heart,
+  star: Star,
+  user: User,
+  chevronLeft: ChevronLeft,
+  chevronRight: ChevronRight,
+  laptop: Laptop,
+  spinner: Loader2,
   twitter: Twitter,
   logo: (props: LucideProps) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
