@@ -50,7 +50,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       })
     }
 
-    return router.push("/")
+    return router.refresh();
   }
 
   return (
