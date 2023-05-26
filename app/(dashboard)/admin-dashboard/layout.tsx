@@ -7,13 +7,13 @@ import { DashboardNav } from "@/components/nav"
 import { SiteFooter } from "@/components/site-footer"
 import { UserAccountNav } from "@/components/user-account-nav"
 
-interface AdminDashboardLayoutProps {
+interface DashboardLayoutProps {
   children?: React.ReactNode
 }
 
-export default async function AdminDashboardLayout({
+export default async function DashboardLayout({
   children,
-}: AdminDashboardLayoutProps) {
+}: DashboardLayoutProps) {
   const user = await getCurrentUser()
 
   if (!user) {
