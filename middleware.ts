@@ -31,7 +31,7 @@ export default withAuth(
 
     if (
       req.nextUrl.pathname === "/admin-dashboard" &&
-      req.nextauth.token?.role !== "RESTAURANT"
+      req.nextauth.token?.role !== "ADMIN"
     ) {
       return new NextResponse("You are not authorized")
     }

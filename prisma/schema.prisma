@@ -71,6 +71,5 @@ model VerificationToken {
 
 enum UserRole {
   ADMIN
-  RESTAURANT
   USER
 }
