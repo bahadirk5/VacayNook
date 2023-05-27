@@ -1,12 +1,11 @@
 "use client"
 
-import Link from "next/link"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useFieldArray, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import * as z from "zod"
 
-import { cn } from "@/lib/utils"
-import { Button, buttonVariants } from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import {
   Form,
   FormControl,
@@ -17,63 +16,136 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
 
-import { Icons } from "./icons"
+const essentials = [
+  {
+    id: "wifi",
+    label: "Wifi",
+  },
+  {
+    id: "kitchen",
+    label: "Kitchen",
+  },
+  {
+    id: "washing_machine",
+    label: "Washing Machine",
+  },
+  {
+    id: "dryer",
+    label: "Dryer",
+  },
+  {
+    id: "air_conditioning",
+    label: "Air conditioning",
+  },
+  {
+    id: "heating",
+    label: "heating",
+  },
+  {
+    id: "dedicated_workspace",
+    label: "Dedicated workspace",
+  },
+  {
+    id: "tv",
+    label: "TV",
+  },
+  {
+    id: "hair_dryer",
+    label: "Hair Dryer",
+  },
+  {
+    id: "iron",
+    label: "Iron",
+  },
+] as const
 
-const profileFormSchema = z.object({
-  username: z
+const features = [
+  {
+    id: "pool",
+    label: "Pool",
+  },
+  {
+    id: "hot_tub",
+    label: "Hot tub",
+  },
+  {
+    id: "free_parking_on_premises",
+    label: "Free parking on premises",
+  },
+  {
+    id: "ev_charger",
+    label: "EV charger",
+  },
+  {
+    id: "cot",
+    label: "Cot",
+  },
+  {
+    id: "gym",
+    label: "Gym",
+  },
+  {
+    id: "bbq_grill",
+    label: "BBQ grill",
+  },
+  {
+    id: "breakfast",
+    label: "Breakfast",
+  },
+  {
+    id: "indoor_fireplace",
+    label: "Indoor fireplace",
+  },
+  {
+    id: "smoking_allowed",
+    label: "Smoking allowed",
+  },
+] as const
+
+const postFormSchema = z.object({
+  title: z
     .string()
     .min(2, {
-      message: "Username must be at least 2 characters.",
+      message: "Title must be at least 2 characters.",
     })
     .max(30, {
-      message: "Username must not be longer than 30 characters.",
+      message: "Title must not be longer than 30 characters.",
     }),
-  email: z
-    .string({
-      required_error: "Please select an email to display.",
+  description: z.string().max(160).min(4),
+  location: z
+    .string()
+    .min(2, {
+      message: "Location must be at least 2 characters.",
     })
-    .email(),
-  bio: z.string().max(160).min(4),
-  urls: z
-    .array(
-      z.object({
-        value: z.string().url({ message: "Please enter a valid URL." }),
-      })
-    )
-    .optional(),
+    .max(30, {
+      message: "Location must not be longer than 30 characters.",
+    }),
+  essentials: z
+    .array(z.string())
+    .refine((value) => value.some((item) => item), {
+      message: "You have to select at least one item.",
+    }),
+  features: z.array(z.string()).refine((value) => value.some((item) => item), {
+    message: "You have to select at least one item.",
+  }),
 })
 
-type ProfileFormValues = z.infer<typeof profileFormSchema>
+type ProfileFormValues = z.infer<typeof postFormSchema>
 
 // This can come from your database or API.
 const defaultValues: Partial<ProfileFormValues> = {
-  bio: "I own a computer.",
-  urls: [
-    { value: "https://shadcn.com" },
-    { value: "http://twitter.com/shadcn" },
-  ],
+  essentials: [],
+  features: [],
 }
 
 export default function ListingForm() {
   const form = useForm<ProfileFormValues>({
-    resolver: zodResolver(profileFormSchema),
+    resolver: zodResolver(postFormSchema),
     defaultValues,
-    mode: "onChange",
-  })
-
-  const { fields, append } = useFieldArray({
-    name: "urls",
-    control: form.control,
   })
 
   function onSubmit(data: ProfileFormValues) {
@@ -89,19 +161,26 @@ export default function ListingForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <div className="space-y-0">
+          <h3 className="text-lg font-medium">General Info</h3>
+          <p className="text-sm text-muted-foreground">
+            This is how others will see you on the site.
+          </p>
+          <Separator className="my-7" />
+        </div>
         <FormField
           control={form.control}
-          name="username"
+          name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Title</FormLabel>
               <FormControl>
                 <Input placeholder="shadcn" {...field} />
               </FormControl>
               <FormDescription>
-                This is your public display name. It can be your real name or a
-                pseudonym. You can only change this once every 30 days.
+                This is your public display property name. You can change this
+                any time.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -109,36 +188,10 @@ export default function ListingForm() {
         />
         <FormField
           control={form.control}
-          name="email"
+          name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a verified email to display" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="m@example.com">m@example.com</SelectItem>
-                  <SelectItem value="m@google.com">m@google.com</SelectItem>
-                  <SelectItem value="m@support.com">m@support.com</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormDescription>
-                You can manage verified email addresses in your{" "}
-                <Link href="/examples/forms">email settings</Link>.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="bio"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Bio</FormLabel>
+              <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Tell us a little bit about yourself"
@@ -154,39 +207,143 @@ export default function ListingForm() {
             </FormItem>
           )}
         />
-        <div>
-          {fields.map((field, index) => (
-            <FormField
-              control={form.control}
-              key={field.id}
-              name={`urls.${index}`}
-              render={() => (
-                <FormItem>
-                  <FormLabel className={cn(index !== 0 && "sr-only")}>
-                    URLs
-                  </FormLabel>
-                  <FormDescription className={cn(index !== 0 && "sr-only")}>
-                    Add links to your website, blog, or social media profiles.
-                  </FormDescription>
-                  <FormControl>
-                    <Input {...form.register(`urls.${index}.value`)} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          ))}
-          <Button
-            type="button"
-            variant="link"
-            size="sm"
-            className="mt-1"
-            onClick={() => append({ value: "" })}
-          >
-            Add URL
-          </Button>
+        <FormField
+          control={form.control}
+          name="location"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Location</FormLabel>
+              <FormControl>
+                <Input placeholder="shadcn" {...field} />
+              </FormControl>
+              <FormDescription>
+                This is your public display property name. You can change this
+                any time.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <div className="space-y-0">
+          <h3 className="text-lg font-medium">Categories</h3>
+          <p className="text-sm text-muted-foreground">
+            This is how others will see you on the site.
+          </p>
+          <Separator className="my-7" />
         </div>
-        <Button type="submit">Update profile</Button>
+        <div className="space-y-0">
+          <h3 className="text-lg font-medium">Amenities</h3>
+          <p className="text-sm text-muted-foreground">
+            This is how others will see you on the site.
+          </p>
+          <Separator className="my-7" />
+        </div>
+        <div className="space-y-5 sm:flex sm:gap-10 md:space-y-0">
+          <FormField
+            control={form.control}
+            name="essentials"
+            render={() => (
+              <FormItem>
+                <div className="mb-4">
+                  <FormLabel className="text-base">Essentials</FormLabel>
+                  <FormDescription>
+                    Select the items you want to display in the sidebar.
+                  </FormDescription>
+                </div>
+                {essentials.map((item) => (
+                  <FormField
+                    key={item.id}
+                    control={form.control}
+                    name="essentials"
+                    render={({ field }) => {
+                      return (
+                        <FormItem
+                          key={item.id}
+                          className="flex flex-row items-start space-x-3 space-y-0"
+                        >
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value?.includes(item.id)}
+                              onCheckedChange={(checked) => {
+                                return checked
+                                  ? field.onChange([...field.value, item.id])
+                                  : field.onChange(
+                                      field.value?.filter(
+                                        (value) => value !== item.id
+                                      )
+                                    )
+                              }}
+                            />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            {item.label}
+                          </FormLabel>
+                        </FormItem>
+                      )
+                    }}
+                  />
+                ))}
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="features"
+            render={() => (
+              <FormItem>
+                <div className="mb-4">
+                  <FormLabel className="text-base">Features</FormLabel>
+                  <FormDescription>
+                    Select the items you want to display in the sidebar.
+                  </FormDescription>
+                </div>
+                {features.map((item) => (
+                  <FormField
+                    key={item.id}
+                    control={form.control}
+                    name="features"
+                    render={({ field }) => {
+                      return (
+                        <FormItem
+                          key={item.id}
+                          className="flex flex-row items-start space-x-3 space-y-0"
+                        >
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value?.includes(item.id)}
+                              onCheckedChange={(checked) => {
+                                return checked
+                                  ? field.onChange([...field.value, item.id])
+                                  : field.onChange(
+                                      field.value?.filter(
+                                        (value) => value !== item.id
+                                      )
+                                    )
+                              }}
+                            />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            {item.label}
+                          </FormLabel>
+                        </FormItem>
+                      )
+                    }}
+                  />
+                ))}
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="space-y-0">
+          <h3 className="text-lg font-medium">Image</h3>
+          <p className="text-sm text-muted-foreground">
+            This is how others will see you on the site.
+          </p>
+          <Separator className="my-7" />
+        </div>
+        <Button type="submit">Submit post</Button>
       </form>
     </Form>
   )

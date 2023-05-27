@@ -11,17 +11,17 @@ interface PostPageProps {
 
 export default function PostPage({ params }: PostPageProps) {
   return (
-    <div>
-      <Link
-        href="/admin-dashboard"
-        className={cn(buttonVariants({ variant: "ghost" }))}
-      >
-        <>
+    <div className="space-y-6">
+      <div>
+        <Link
+          href="/admin-dashboard"
+          className={cn(buttonVariants({ variant: "ghost" }))}
+        >
           <Icons.chevronLeft className="mr-2 h-4 w-4" />
           Back
-        </>
-      </Link>
-      <div className="max-w-3xl place-self-center">
+        </Link>
+      </div>
+      <div className="mx-auto flex w-full max-w-3xl flex-col justify-center">
         <ListingForm />
       </div>
     </div>
