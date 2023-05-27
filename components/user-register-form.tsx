@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
+import Image from "next/image"
 
 interface UserRegisterFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -147,7 +148,13 @@ export function UserRegisterForm({
         {isGoogleLoading ? (
           <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
         ) : (
-          <Icons.gitHub className="mr-2 h-4 w-4" />
+          <Image
+            src="/google.png"
+            width={8}
+            height={8}
+            alt="google logo"
+            className="mr-2 h-4 w-4"
+          />
         )}{" "}
         Google
       </button>
