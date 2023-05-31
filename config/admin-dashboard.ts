@@ -9,6 +9,11 @@ export const adminDashboardConfig: DashboardConfig = {
       icon: "post",
     },
     {
+      title: "Category",
+      href: "/admin-dashboard/category",
+      icon: "category",
+    },
+    {
       title: "Settings",
       href: "/admin-dashboard/settings",
       icon: "settings",

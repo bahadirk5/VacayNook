@@ -1,21 +1,24 @@
 import {
+  ArrowRight,
   ChevronLeft,
   ChevronRight,
+  Command,
+  CreditCard,
+  FileText,
   Heart,
+  Home,
   Laptop,
   Loader2,
   LucideProps,
   Moon,
+  MoreVertical,
+  Plus,
+  Settings,
   Star,
   SunMedium,
+  Trash,
   Twitter,
   User,
-  ArrowRight,
-  Settings,
-  CreditCard,
-  FileText,
-  Home,
-  Plus,
   type Icon as LucideIcon,
 } from "lucide-react"
 
@@ -28,6 +31,7 @@ export const Icons = {
   star: Star,
   user: User,
   add: Plus,
+  category: Command,
   chevronLeft: ChevronLeft,
   chevronRight: ChevronRight,
   settings: Settings,
@@ -38,6 +42,8 @@ export const Icons = {
   spinner: Loader2,
   twitter: Twitter,
   logo: Home,
+  ellipsis: MoreVertical,
+  trash: Trash,
   gitHub: (props: LucideProps) => (
     <svg viewBox="0 0 438.549 438.549" {...props}>
       <path

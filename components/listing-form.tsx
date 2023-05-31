@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
+import { LocationForm } from "@/components/location-form"
 
 const essentials = [
   {
@@ -43,7 +44,7 @@ const essentials = [
   },
   {
     id: "heating",
-    label: "heating",
+    label: "Heating",
   },
   {
     id: "dedicated_workspace",
@@ -132,23 +133,27 @@ const postFormSchema = z.object({
   features: z.array(z.string()).refine((value) => value.some((item) => item), {
     message: "You have to select at least one item.",
   }),
+  latlng: z.object({
+    lat: z.number(),
+    lng: z.number(),
+  }),
 })
 
-type ProfileFormValues = z.infer<typeof postFormSchema>
+type PostFormValues = z.infer<typeof postFormSchema>
 
 // This can come from your database or API.
-const defaultValues: Partial<ProfileFormValues> = {
+const defaultValues: Partial<PostFormValues> = {
   essentials: [],
   features: [],
 }
 
 export default function ListingForm() {
-  const form = useForm<ProfileFormValues>({
+  const form = useForm<PostFormValues>({
     resolver: zodResolver(postFormSchema),
     defaultValues,
   })
 
-  function onSubmit(data: ProfileFormValues) {
+  function onSubmit(data: PostFormValues) {
     toast({
       title: "You submitted the following values:",
       description: (
@@ -164,7 +169,7 @@ export default function ListingForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="space-y-0">
           <h3 className="text-lg font-medium">General Info</h3>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             This is how others will see you on the site.
           </p>
           <Separator className="my-7" />
@@ -226,14 +231,31 @@ export default function ListingForm() {
         />
         <div className="space-y-0">
           <h3 className="text-lg font-medium">Categories</h3>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             This is how others will see you on the site.
           </p>
           <Separator className="my-7" />
         </div>
         <div className="space-y-0">
+          <h3 className="text-lg font-medium">Location</h3>
+          <p className="text-muted-foreground text-sm">
+            This is how others will see you on the site.
+          </p>
+          <Separator className="my-7" />
+        </div>
+        <FormField
+          control={form.control}
+          name="latlng"
+          render={({ field }) => (
+            <LocationForm
+              value={field.value}
+              onChange={field.onChange}
+            />
+          )}
+        />
+        <div className="space-y-0">
           <h3 className="text-lg font-medium">Amenities</h3>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             This is how others will see you on the site.
           </p>
           <Separator className="my-7" />
@@ -338,7 +360,7 @@ export default function ListingForm() {
         </div>
         <div className="space-y-0">
           <h3 className="text-lg font-medium">Image</h3>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             This is how others will see you on the site.
           </p>
           <Separator className="my-7" />

@@ -63,7 +63,6 @@ model Listing {
   id            String   @id @default(cuid())
   title         String
   description   String
-  category      String
   imageSrc      String
   roomCount     Int
   bathRoomCount Int
@@ -73,10 +72,19 @@ model Listing {
   createdAt     DateTime @default(now()) @map(name: "created_at")
   updatedAt     DateTime @default(now()) @map(name: "updated_at")
   userId        String
+  categoryId    String
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+  @@index([categoryId])
+}
+
+model Category {
+  id      String    @id @default(cuid())
+  title   String
+  Listing Listing[]
 }
 
 model VerificationToken {
