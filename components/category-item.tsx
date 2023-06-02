@@ -18,7 +18,7 @@ export function CategoryItem({ category }: CategoryItemProps) {
   )
 }
 
-CategoryItem.Skeleton = function PostItemSkeleton() {
+CategoryItem.Skeleton = function CategoryItemSkeleton() {
   return (
     <div className="p-4">
       <div className="space-y-3">

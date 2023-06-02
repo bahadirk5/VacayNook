@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Category } from "@prisma/client"
 
@@ -58,7 +59,12 @@ export function CategoryOperations({ category }: CategoryOperationsProps) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem>
-            Edit
+            <Link
+              href={`/admin-dashboard/category/${category.id}`}
+              className="flex w-full"
+            >
+              Edit
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem

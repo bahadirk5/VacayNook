@@ -9,6 +9,10 @@ import { EmptyPlaceholder } from "@/components/empty-placeholder"
 import { DashboardHeader } from "@/components/header"
 import { DashboardShell } from "@/components/shell"
 
+export const metadata = {
+  title: "Category",
+}
+
 export default async function Category() {
   const user = await getCurrentUser()
 

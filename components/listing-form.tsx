@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
+import { ImageUpload } from "@/components/image-upload"
 import { LocationForm } from "@/components/location-form"
 
 const essentials = [
@@ -137,6 +138,7 @@ const postFormSchema = z.object({
     lat: z.number(),
     lng: z.number(),
   }),
+  imageSrc: z.string(),
 })
 
 type PostFormValues = z.infer<typeof postFormSchema>
@@ -169,7 +171,7 @@ export default function ListingForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="space-y-0">
           <h3 className="text-lg font-medium">General Info</h3>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             This is how others will see you on the site.
           </p>
           <Separator className="my-7" />
@@ -231,14 +233,14 @@ export default function ListingForm() {
         />
         <div className="space-y-0">
           <h3 className="text-lg font-medium">Categories</h3>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             This is how others will see you on the site.
           </p>
           <Separator className="my-7" />
         </div>
         <div className="space-y-0">
           <h3 className="text-lg font-medium">Location</h3>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             This is how others will see you on the site.
           </p>
           <Separator className="my-7" />
@@ -247,15 +249,12 @@ export default function ListingForm() {
           control={form.control}
           name="latlng"
           render={({ field }) => (
-            <LocationForm
-              value={field.value}
-              onChange={field.onChange}
-            />
+            <LocationForm value={field.value} onChange={field.onChange} />
           )}
         />
         <div className="space-y-0">
           <h3 className="text-lg font-medium">Amenities</h3>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             This is how others will see you on the site.
           </p>
           <Separator className="my-7" />
@@ -360,12 +359,21 @@ export default function ListingForm() {
         </div>
         <div className="space-y-0">
           <h3 className="text-lg font-medium">Image</h3>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             This is how others will see you on the site.
           </p>
-          <Separator className="my-7" />
         </div>
-        <Button type="submit">Submit post</Button>
+        <Separator className="my-7" />
+        <FormField
+          control={form.control}
+          name="imageSrc"
+          render={({ field }) => (
+            <ImageUpload value={field.value} onChange={field.onChange} />
+          )}
+        />
+        <div>
+          <Button type="submit">Submit post</Button>
+        </div>
       </form>
     </Form>
   )
