@@ -29,18 +29,20 @@ import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
 
 const categoryFormSchema = z.object({
-  title: z
+  name: z
     .string()
     .min(2, { message: "Title must be at least 2 characters." })
     .max(30, {
       message: "Title must not be longer than 30 characters.",
     }),
+  icon: z.string(),
 })
 
 type CategoryFormValues = z.infer<typeof categoryFormSchema>
 
 const defaultValues: Partial<CategoryFormValues> = {
-  title: "",
+  name: "",
+  icon: "",
 }
 export function CategoryModal() {
   const router = useRouter()
@@ -61,7 +63,8 @@ export function CategoryModal() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        title: data.title,
+        name: data.name,
+        icon: data.icon
       }),
     })
 
@@ -102,7 +105,7 @@ export function CategoryModal() {
                 <div className="space-y-2">
                   <FormField
                     control={form.control}
-                    name="title"
+                    name="name"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Category name</FormLabel>
@@ -114,7 +117,21 @@ export function CategoryModal() {
                     )}
                   />
                 </div>
-                <div className="space-y-2"></div>
+                <div className="space-y-2">
+                <FormField
+                    control={form.control}
+                    name="icon"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Icon</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Tiny homes" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
             </div>
             <DialogFooter>

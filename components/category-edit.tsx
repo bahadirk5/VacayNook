@@ -21,13 +21,16 @@ import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
 
 const formSchema = z.object({
-  title: z.string().min(2, {
+  name: z.string().min(2, {
+    message: "Category name must be at least 2 characters.",
+  }),
+  icon: z.string().min(2, {
     message: "Category name must be at least 2 characters.",
   }),
 })
 
 interface CategoryEditProps {
-  category: Pick<Category, "id" | "title">
+  category: Pick<Category, "id" | "name" | "icon">
 }
 
 export function CategoryEdit({ category }: CategoryEditProps) {
@@ -37,7 +40,8 @@ export function CategoryEdit({ category }: CategoryEditProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: category.title,
+      name: category.name,
+      icon: category.icon,
     },
   })
 
@@ -50,7 +54,8 @@ export function CategoryEdit({ category }: CategoryEditProps) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        title: values.title,
+        name: values.name,
+        icon: values.icon,
       }),
     })
 
@@ -72,10 +77,23 @@ export function CategoryEdit({ category }: CategoryEditProps) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="title"
+          name="name"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Category name</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="icon"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Icon</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>

@@ -37,6 +37,20 @@ export default withAuth(
     }
 
     if (
+      req.nextUrl.pathname === "/admin-dashboard/category" &&
+      req.nextauth.token?.role !== "ADMIN"
+    ) {
+      return new NextResponse("You are not authorized")
+    }
+
+    if (
+      req.nextUrl.pathname === "/admin-dashboard/settings" &&
+      req.nextauth.token?.role !== "ADMIN"
+    ) {
+      return new NextResponse("You are not authorized")
+    }
+
+    if (
       req.nextUrl.pathname === "/user-dashboard" &&
       req.nextauth.token?.role !== "USER"
     ) {

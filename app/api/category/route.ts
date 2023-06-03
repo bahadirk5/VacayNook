@@ -5,7 +5,8 @@ import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
 
 const categoryCreateSchema = z.object({
-  title: z.string(),
+  name: z.string(),
+  icon: z.string(),
 })
 
 export async function GET() {
@@ -23,7 +24,7 @@ export async function GET() {
     const category = await db.category.findMany({
       select: {
         id: true,
-        title: true,
+        name: true,
       },
     })
 
@@ -50,7 +51,8 @@ export async function POST(req: Request) {
 
     const category = await db.category.create({
       data: {
-        title: body.title,
+        name: body.name,
+        icon: body.icon,
       },
     })
     return new Response(JSON.stringify(category))

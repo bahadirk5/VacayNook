@@ -74,7 +74,8 @@ export async function PATCH(
         id: params.categoryId,
       },
       data: {
-        title: body.title,
+        name: body.name,
+        icon: body.icon
       },
     })
 

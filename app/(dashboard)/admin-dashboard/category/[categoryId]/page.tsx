@@ -32,6 +32,6 @@ export default async function UpdateCategory({ params }: UpdateCategoryProps) {
   }
 
   return (
-    <CategoryEdit category={{ id: category?.id, title: category?.title }} />
+    <CategoryEdit category={{ id: category?.id, name: category?.name, icon: category?.icon }} />
   )
 }

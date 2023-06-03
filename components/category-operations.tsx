@@ -42,7 +42,7 @@ async function deletePost(categoryId: string) {
 }
 
 interface CategoryOperationsProps {
-  category: Pick<Category, "id" | "title">
+  category: Pick<Category, "id" | "name" | "icon">
 }
 
 export function CategoryOperations({ category }: CategoryOperationsProps) {
