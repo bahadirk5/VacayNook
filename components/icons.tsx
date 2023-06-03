@@ -1,4 +1,5 @@
 import {
+  AirVent,
   ArrowRight,
   ChevronLeft,
   ChevronRight,
@@ -44,6 +45,7 @@ export const Icons = {
   logo: Home,
   ellipsis: MoreVertical,
   trash: Trash,
+  AirVent: AirVent,
   gitHub: (props: LucideProps) => (
     <svg viewBox="0 0 438.549 438.549" {...props}>
       <path

@@ -14,6 +14,11 @@ export const adminDashboardConfig: DashboardConfig = {
       icon: "category",
     },
     {
+      title: "Amenities",
+      href: "/admin-dashboard/amenities",
+      icon: "AirVent",
+    },
+    {
       title: "Settings",
       href: "/admin-dashboard/settings",
       icon: "settings",
