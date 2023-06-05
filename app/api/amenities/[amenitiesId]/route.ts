@@ -74,9 +74,9 @@ export async function PATCH(
         id: params.amenitiesId,
       },
       data: {
-        name: body.name,
         title: body.title,
-        icon: body.title,
+        name: body.name,
+        icon: body.icon,
       },
     })
 

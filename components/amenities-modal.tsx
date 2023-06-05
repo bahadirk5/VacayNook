@@ -77,7 +77,7 @@ interface AmenitiesModalProps {
   variant?: string
 }
 
-export function AmenitiesModal({variant}: AmenitiesModalProps) {
+export function AmenitiesModal({ variant }: AmenitiesModalProps) {
   const router = useRouter()
 
   const form = useForm<AmenitiesFormValues>({
