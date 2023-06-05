@@ -69,7 +69,10 @@ export function CategoryOperations({ category }: CategoryOperationsProps) {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="flex cursor-pointer items-center text-destructive focus:text-destructive"
-            onSelect={() => setShowDeleteAlert(true)}
+            onSelect={() => {
+              setShowDeleteAlert(true)
+              document.body.style.pointerEvents = ""
+            }}
           >
             Delete
           </DropdownMenuItem>

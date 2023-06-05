@@ -44,7 +44,12 @@ const defaultValues: Partial<CategoryFormValues> = {
   name: "",
   icon: "",
 }
-export function CategoryModal() {
+
+interface CategoryModalProps {
+  variant?: string
+}
+
+export function CategoryModal({variant}: CategoryModalProps) {
   const router = useRouter()
 
   const form = useForm<CategoryFormValues>({
@@ -87,7 +92,8 @@ export function CategoryModal() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>
+        {/* @ts-ignore */}
+        <Button variant={variant && variant}>
           <Icons.add className="mr-2 h-4 w-4" /> New category
         </Button>
       </DialogTrigger>

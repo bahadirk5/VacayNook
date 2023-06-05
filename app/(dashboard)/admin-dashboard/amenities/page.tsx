@@ -4,10 +4,12 @@ import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
 import getCurrentUser from "@/lib/session"
 import { AmenitiesModal } from "@/components/amenities-modal"
-import { AmenitiesItem } from "@/components/amenities-item"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
 import { DashboardHeader } from "@/components/header"
 import { DashboardShell } from "@/components/shell"
+
+import { columns } from "./components/columns"
+import { DataTable } from "./components/data-table"
 
 export const metadata = {
   title: "Amenities",
@@ -28,19 +30,19 @@ export default async function Amenities() {
       </DashboardHeader>
       <div>
         {amenities?.length ? (
-          <div className="divide-y divide-border rounded-md border">
-            {amenities.map((amenity) => (
-              <AmenitiesItem key={amenity.id} amenities={amenity} />
-            ))}
+          <div className="container mx-auto py-10">
+            <DataTable columns={columns} data={amenities} />
           </div>
         ) : (
           <EmptyPlaceholder>
             <EmptyPlaceholder.Icon name="post" />
-            <EmptyPlaceholder.Title>No amenities created</EmptyPlaceholder.Title>
+            <EmptyPlaceholder.Title>
+              No amenities created
+            </EmptyPlaceholder.Title>
             <EmptyPlaceholder.Description>
               You don&apos;t have any posts yet. Start creating content.
             </EmptyPlaceholder.Description>
-            <AmenitiesModal />
+            <AmenitiesModal variant="outline" />
           </EmptyPlaceholder>
         )}
       </div>

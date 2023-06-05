@@ -40,7 +40,7 @@ export default async function Category() {
             <EmptyPlaceholder.Description>
               You don&apos;t have any posts yet. Start creating content.
             </EmptyPlaceholder.Description>
-            <CategoryModal />
+            <CategoryModal variant="outline" />
           </EmptyPlaceholder>
         )}
       </div>

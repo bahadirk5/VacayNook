@@ -7,7 +7,6 @@ import { AmenitiesTitles } from "@prisma/client"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -73,7 +72,12 @@ const AmenitiesArr = [
 type AmenitiesFormValues = z.infer<typeof amenitiesFormSchema>
 
 const defaultValues: Partial<AmenitiesFormValues> = {}
-export function AmenitiesModal() {
+
+interface AmenitiesModalProps {
+  variant?: string
+}
+
+export function AmenitiesModal({variant}: AmenitiesModalProps) {
   const router = useRouter()
 
   const form = useForm<AmenitiesFormValues>({
@@ -117,7 +121,8 @@ export function AmenitiesModal() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>
+        {/* @ts-ignore */}
+        <Button variant={variant && variant}>
           <Icons.add className="mr-2 h-4 w-4" /> New amenities
         </Button>
       </DialogTrigger>

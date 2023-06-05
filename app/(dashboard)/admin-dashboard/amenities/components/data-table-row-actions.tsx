@@ -3,7 +3,8 @@
 import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Amenities } from "@prisma/client"
+import { Row } from "@tanstack/react-table"
+import { MoreHorizontal, Pen, Trash } from "lucide-react"
 
 import {
   AlertDialog,
@@ -15,15 +16,19 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
+
+import { amenitiesSchema } from "../data/schema"
+import { toast } from "@/components/ui/use-toast"
 
 async function deletePost(amenitiesId: string) {
   const response = await fetch(`/api/amenities/${amenitiesId}`, {
@@ -41,48 +46,61 @@ async function deletePost(amenitiesId: string) {
   return true
 }
 
-interface AmenitiesOperationsProps {
-  amenities: Pick<Amenities, "id" | "name" | "title" | "icon">
+interface DataTableRowActionsProps<TData> {
+  row: Row<TData>
 }
 
-export function AmenitiesOperations({ amenities }: AmenitiesOperationsProps) {
+export function DataTableRowActions<TData>({
+  row,
+}: DataTableRowActionsProps<TData>) {
   const router = useRouter()
   const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false)
   const [isDeleteLoading, setIsDeleteLoading] = React.useState<boolean>(false)
+  const task = amenitiesSchema.parse(row.original)
 
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-md border transition-colors hover:bg-muted">
-          <Icons.ellipsis className="h-4 w-4" />
-          <span className="sr-only">Open</span>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+          >
+            <MoreHorizontal className="h-4 w-4" />
+            <span className="sr-only">Open menu</span>
+          </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent align="end" className="w-[160px]">
           <DropdownMenuItem>
             <Link
-              href={`/admin-dashboard/amenities/${amenities.id}`}
+              href={`/admin-dashboard/amenities/${task.id}`}
               className="flex w-full"
             >
+              <Pen className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
               Edit
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="flex cursor-pointer items-center text-destructive focus:text-destructive"
-            onSelect={() => setShowDeleteAlert(true)}
+            onSelect={() => {
+              setShowDeleteAlert(true)
+              document.body.style.pointerEvents = ""
+            }}
           >
+            <Trash className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
             Delete
+            <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       <AlertDialog open={showDeleteAlert} onOpenChange={setShowDeleteAlert}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>
-              Are you sure you want to delete this category?
-            </AlertDialogTitle>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone.
+              This action cannot be undone. This will permanently delete your
+              amenities and remove your data from our servers.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -92,7 +110,7 @@ export function AmenitiesOperations({ amenities }: AmenitiesOperationsProps) {
                 event.preventDefault()
                 setIsDeleteLoading(true)
 
-                const deleted = await deletePost(amenities.id)
+                const deleted = await deletePost(task.id)
 
                 if (deleted) {
                   setIsDeleteLoading(false)
