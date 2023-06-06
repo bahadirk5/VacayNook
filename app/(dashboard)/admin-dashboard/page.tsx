@@ -7,6 +7,9 @@ import { EmptyPlaceholder } from "@/components/empty-placeholder"
 import { DashboardHeader } from "@/components/header"
 import { PostCreateButton } from "@/components/post-create-button"
 import { DashboardShell } from "@/components/shell"
+import Link from "next/link"
+import { buttonVariants } from "@/components/ui/button"
+import { Icons } from "@/components/icons"
 
 export const metadata = {
   title: "Dashboard",
@@ -22,7 +25,7 @@ export default async function DashboardPage() {
   return (
     <DashboardShell>
       <DashboardHeader heading="Posts" text="Create and manage posts.">
-        <PostCreateButton />
+        <Link href="/post" className={buttonVariants()}><Icons.add className="mr-2 h-4 w-4" /> New post</Link>
       </DashboardHeader>
       <div>
         <EmptyPlaceholder>
@@ -31,7 +34,7 @@ export default async function DashboardPage() {
           <EmptyPlaceholder.Description>
             You don&apos;t have any posts yet. Start creating content.
           </EmptyPlaceholder.Description>
-          <PostCreateButton variant="outline" />
+          <Link href="/post" className={buttonVariants({ variant: "outline" })}><Icons.add className="mr-2 h-4 w-4" /> New post</Link>
         </EmptyPlaceholder>
       </div>
     </DashboardShell>

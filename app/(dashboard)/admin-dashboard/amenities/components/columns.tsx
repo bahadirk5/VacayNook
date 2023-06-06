@@ -4,8 +4,6 @@ import * as React from "react"
 import { AmenitiesTitles } from "@prisma/client"
 import { ColumnDef } from "@tanstack/react-table"
 
-import { toast } from "@/components/ui/use-toast"
-
 import { DataTableColumnHeader } from "./data-table-column-header"
 import { DataTableRowActions } from "./data-table-row-actions"
 
