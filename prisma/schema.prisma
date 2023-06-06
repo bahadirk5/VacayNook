@@ -63,16 +63,20 @@ model Listing {
   id            String   @id @default(cuid())
   title         String
   description   String
-  imageSrc      String
-  roomCount     Int
-  bathRoomCount Int
-  guestCount    Int
-  price         Int
+  imageSrc      String?
+  published     Boolean  @default(false)
+  roomCount     String
+  bathRoomCount String
+  guestCount    String
+  price         String
   location      String
+  latlng        Json
   createdAt     DateTime @default(now()) @map(name: "created_at")
   updatedAt     DateTime @default(now()) @map(name: "updated_at")
   userId        String
   categoryId    String
+
+  amenities Amenities[]
 
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
@@ -89,10 +93,11 @@ model Category {
 }
 
 model Amenities {
-  id    String          @id @default(cuid())
-  title AmenitiesTitles
-  name  String
-  icon  String
+  id      String          @id @default(cuid())
+  title   AmenitiesTitles
+  name    String
+  icon    String
+  listing Listing[]
 }
 
 model VerificationToken {
