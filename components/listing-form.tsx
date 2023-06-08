@@ -3,7 +3,7 @@
 import * as React from "react"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Amenities, Category } from "@prisma/client"
+import { Amenities, Category, Listing } from "@prisma/client"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 
@@ -67,23 +67,33 @@ const postFormSchema = z.object({
 
 type PostFormValues = z.infer<typeof postFormSchema>
 
-// This can come from your database or API.
-const defaultValues: Partial<PostFormValues> = {
-  amenities: [],
-}
-
 interface ListingFormProps {
   categories: Pick<Category, "id" | "name" | "icon">[]
   amenities: Pick<Amenities, "id" | "title" | "name" | "icon">[]
+  listing?: Listing
 }
 
 export default function ListingForm({
   categories,
   amenities,
+  listing,
 }: ListingFormProps) {
   const form = useForm<PostFormValues>({
     resolver: zodResolver(postFormSchema),
-    defaultValues,
+    defaultValues: {
+      title: listing?.title,
+      description: listing?.description,
+      location: listing?.location,
+      price: listing?.price,
+      categoryId: listing?.categoryId,
+      roomCount: listing?.roomCount,
+      bathRoomCount: listing?.bathRoomCount,
+      guestCount: listing?.guestCount,
+      //@ts-ignore
+      latlng: listing?.latlng,
+      //@ts-ignore
+      amenities: listing?.amenities.map((e) => e.id),
+    },
   })
 
   const [isSaving, setIsSaving] = React.useState<boolean>(false)
@@ -92,13 +102,25 @@ export default function ListingForm({
   async function onSubmit(data: PostFormValues) {
     setIsSaving(true)
 
-    const response = await fetch("/api/listing", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+    let response: any
+
+    if (listing?.id) {
+      response = await fetch(`/api/listing/${listing.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+    } else {
+      response = await fetch("/api/listing", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+    }
 
     console.log(response)
 
@@ -112,9 +134,15 @@ export default function ListingForm({
       })
     }
 
-    toast({
-      description: "Your listing has been created.",
-    })
+    if (listing?.id) {
+      toast({
+        description: "Your listing has been updated.",
+      })
+    } else {
+      toast({
+        description: "Your listing has been created.",
+      })
+    }
 
     router.push("/admin-dashboard")
   }

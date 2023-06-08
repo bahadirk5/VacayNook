@@ -5,22 +5,19 @@ import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
 
 const listingUpdateSchema = z.object({
-  title: z.string().optional(),
-  description: z.string().optional(),
-  roomCount: z.string().optional(),
-  bathRoomCount: z.string().optional(),
-  guestCount: z.string().optional(),
-  price: z.string().optional(),
-  location: z.string().optional(),
-  latlng: z
-    .object({
-      lat: z.number(),
-      lng: z.number(),
-    })
-    .optional(),
-  categoryId: z.string().optional(),
-  amenities: z.array(z.string()).optional(),
-  publised: z.boolean().optional(),
+  title: z.string(),
+  description: z.string(),
+  roomCount: z.string(),
+  bathRoomCount: z.string(),
+  guestCount: z.string(),
+  price: z.string(),
+  location: z.string(),
+  latlng: z.object({
+    lat: z.number(),
+    lng: z.number(),
+  }),
+  categoryId: z.string(),
+  amenities: z.array(z.string()),
 })
 
 const routeContextSchema = z.object({
@@ -49,9 +46,8 @@ export async function PATCH(
     }
 
     // Get the request body and validate it.
-    const body = await req.json()
-    console.log(body)
-    const payload = listingUpdateSchema.parse(body)
+    const json = await req.json()
+    const body = listingUpdateSchema.parse(json)
 
     // Update the listing.
     await db.listing.update({
@@ -59,22 +55,20 @@ export async function PATCH(
         id: params.listingId,
       },
       data: {
-        title: payload.title || undefined,
-        description: payload.description || undefined,
-        roomCount: payload.roomCount || undefined,
-        bathRoomCount: payload.bathRoomCount || undefined,
-        guestCount: payload.guestCount || undefined,
-        price: payload.price || undefined,
-        location: payload.location || undefined,
-        latlng: payload.latlng || undefined,
-        userId: session.user.id || undefined,
-        published: body.publised || undefined,
-        categoryId: payload.categoryId || undefined,
+        title: body.title,
+        description: body.description,
+        roomCount: body.roomCount,
+        bathRoomCount: body.bathRoomCount,
+        guestCount: body.guestCount,
+        price: body.price,
+        location: body.location,
+        latlng: body.latlng,
+        userId: session.user.id,
+        categoryId: body.categoryId,
         amenities: {
-          connect:
-            payload.amenities?.map((amenities) => ({
-              id: amenities,
-            })) || undefined,
+          connect: body.amenities.map((amenities) => ({
+            id: amenities,
+          })),
         },
       },
     })

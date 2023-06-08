@@ -110,7 +110,7 @@ export function DataTableRowActions<TData>({
         <DropdownMenuContent align="end" className="w-[160px]">
           <DropdownMenuItem>
             <Link
-              href={`/admin-dashboard/listing/${task.id}`}
+              href={`/post/${task.id}`}
               className="flex w-full items-center"
             >
               <Pen className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />

@@ -57,7 +57,7 @@ export async function POST(req: Request) {
     const json = await req.json()
     const body = listingCreateSchema.parse(json)
 
-    const listing = await db.listing.create({
+    await db.listing.create({
       data: {
         title: body.title,
         description: body.description,
@@ -75,13 +75,9 @@ export async function POST(req: Request) {
           })),
         },
       },
-      include: {
-        category: true,
-        amenities: true,
-      },
     })
-    
-    return new Response(JSON.stringify(listing))
+
+    return new Response(null, { status: 200 })
   } catch (error) {
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 })
