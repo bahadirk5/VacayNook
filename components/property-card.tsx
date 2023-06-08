@@ -1,4 +1,6 @@
-import Image from "next/image"
+"use client"
+
+import { useRouter } from "next/navigation"
 import { Amenities, Category, Images, Listing } from "@prisma/client"
 
 import { Button } from "@/components/ui/button"
@@ -15,8 +17,12 @@ interface PropertyCardPorps {
 }
 
 export default function PropertyCard({ listing }: PropertyCardPorps) {
+  const router = useRouter()
   return (
-    <div className="group relative col-span-1 cursor-pointer">
+    <div
+      onClick={() => router.push(`/listings/${listing.id}`)}
+      className="group col-span-1 cursor-pointer"
+    >
       <ImageSlider images={listing.imageSrc} />
       <div className="flex items-center justify-between">
         <div className="text-lg font-semibold">{listing.title}</div>
@@ -25,9 +31,7 @@ export default function PropertyCard({ listing }: PropertyCardPorps) {
           4.5
         </div>
       </div>
-      <p className="text-sm text-muted-foreground">
-        {listing.location}
-      </p>
+      <p className="text-sm text-muted-foreground">{listing.location}</p>
       <div className="flex flex-row items-center gap-1">
         <div className="font-semibold">{listing.price}$</div>
       </div>

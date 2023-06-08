@@ -16,10 +16,14 @@ interface ImageSliderProps {
 export function ImageSlider({ images }: ImageSliderProps) {
   const [curr, setCurr] = React.useState<number>(0)
 
-  const prev = () =>
+  const prev = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation()
     setCurr((curr) => (curr === 0 ? images.length - 1 : curr - 1))
-  const next = () =>
+  }
+  const next = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation()
     setCurr((curr) => (curr === images.length - 1 ? 0 : curr + 1))
+  }
 
   return (
     <div className="relative aspect-square w-full overflow-hidden rounded-xl">
@@ -58,7 +62,9 @@ export function ImageSlider({ images }: ImageSliderProps) {
             <div
               // eslint-disable-next-line tailwindcss/migration-from-tailwind-2
               className={`
-              h-1 w-1 rounded-full bg-white transition-all ${curr === i ? "p-1" : "bg-opacity-50"}
+              h-1 w-1 rounded-full bg-white transition-all ${
+                curr === i ? "p-1" : "bg-opacity-50"
+              }
             `}
             />
           ))}

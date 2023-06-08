@@ -43,9 +43,6 @@ export default async function UpdateListing({ params }: UpdateCategoryProps) {
 
   return (
     <div className="space-y-6">
-      <pre className="mt-2 w-full rounded-md bg-slate-950 p-4">
-        <code className="text-white">{JSON.stringify(listing, null, 2)}</code>
-      </pre>
       <div>
         <Link
           href="/admin-dashboard"
