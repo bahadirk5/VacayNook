@@ -4,7 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Row } from "@tanstack/react-table"
-import { MoreHorizontal, Pen, Trash } from "lucide-react"
+import { Activity, Image, MoreHorizontal, Pen, Trash } from "lucide-react"
 
 import {
   AlertDialog,
@@ -21,30 +21,22 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuPortal,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
+import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
 
-import { amenitiesSchema } from "./schema"
-import { toast } from "@/components/ui/use-toast"
-
-async function deletePost(amenitiesId: string) {
-  const response = await fetch(`/api/amenities/${amenitiesId}`, {
-    method: "DELETE",
-  })
-
-  if (!response?.ok) {
-    toast({
-      title: "Something went wrong.",
-      description: "Your amenities was not deleted. Please try again.",
-      variant: "destructive",
-    })
-  }
-
-  return true
-}
+import { listingSchema } from "./schema"
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>
@@ -56,7 +48,52 @@ export function DataTableRowActions<TData>({
   const router = useRouter()
   const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false)
   const [isDeleteLoading, setIsDeleteLoading] = React.useState<boolean>(false)
-  const task = amenitiesSchema.parse(row.original)
+  const task = listingSchema.parse(row.original)
+
+  async function deletePost(listingId: string) {
+    const response = await fetch(`/api/listing/${listingId}`, {
+      method: "DELETE",
+    })
+
+    if (!response?.ok) {
+      toast({
+        title: "Something went wrong.",
+        description: "Your listing was not deleted. Please try again.",
+        variant: "destructive",
+      })
+    }
+
+    return true
+  }
+
+  async function handlePublish(e: string) {
+    let isPublished: boolean
+    if (e === "true") {
+      isPublished = true
+    } else {
+      isPublished = false
+    }
+
+    const response = await fetch(`/api/listing/published/${task.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        published: isPublished,
+      }),
+    })
+
+    if (!response?.ok) {
+      toast({
+        title: "Something went wrong.",
+        description: "Please try again.",
+        variant: "destructive",
+      })
+    }
+
+    router.refresh()
+  }
 
   return (
     <>
@@ -73,13 +110,47 @@ export function DataTableRowActions<TData>({
         <DropdownMenuContent align="end" className="w-[160px]">
           <DropdownMenuItem>
             <Link
-              href={`/admin-dashboard/amenities/${task.id}`}
-              className="flex w-full"
+              href={`/admin-dashboard/listing/${task.id}`}
+              className="flex w-full items-center"
             >
               <Pen className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
               Edit
             </Link>
           </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            <Link
+              href={`/admin-dashboard/image/${task.id}`}
+              className="flex w-full items-center"
+            >
+              {/* eslint-disable-next-line jsx-a11y/alt-text */}
+              <Image className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+              Image
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>
+              <Activity className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+              Publish
+            </DropdownMenuSubTrigger>
+            <DropdownMenuPortal>
+              <DropdownMenuSubContent>
+                <DropdownMenuRadioGroup
+                  value={task.published.toString()}
+                  onValueChange={handlePublish}
+                >
+                  <DropdownMenuRadioItem value="true">
+                    Published
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuRadioItem value="false">
+                    Unpublished
+                  </DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
+              </DropdownMenuSubContent>
+            </DropdownMenuPortal>
+          </DropdownMenuSub>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="flex cursor-pointer items-center text-destructive focus:text-destructive"

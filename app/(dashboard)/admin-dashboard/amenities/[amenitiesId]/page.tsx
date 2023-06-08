@@ -32,12 +32,7 @@ export default async function UpdateAmenities({ params }: UpdateCategoryProps) {
   }
   return (
     <AmenitiesEdit
-      amenities={{
-        id: amenities?.id,
-        title: amenities?.title,
-        name: amenities?.name,
-        icon: amenities.icon,
-      }}
+      amenities={amenities}
     />
   )
 }

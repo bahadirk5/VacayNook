@@ -59,11 +59,18 @@ model User {
   @@map(name: "users")
 }
 
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
 model Listing {
   id            String   @id @default(cuid())
   title         String
   description   String
-  imageSrc      String?
   published     Boolean  @default(false)
   roomCount     String
   bathRoomCount String
@@ -76,6 +83,7 @@ model Listing {
   userId        String
   categoryId    String
 
+  imageSrc  Images[]
   amenities Amenities[]
 
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -83,6 +91,16 @@ model Listing {
 
   @@index([userId])
   @@index([categoryId])
+}
+
+model Images {
+  url       String  @unique
+  publicId  String  @unique
+  listingId String
+
+  Listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@index([listingId])
 }
 
 model Category {
@@ -98,14 +116,6 @@ model Amenities {
   name    String
   icon    String
   listing Listing[]
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
 }
 
 enum UserRole {

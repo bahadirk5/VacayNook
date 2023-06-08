@@ -100,6 +100,8 @@ export default function ListingForm({
       body: JSON.stringify(data),
     })
 
+    console.log(response)
+
     setIsSaving(false)
 
     if (!response?.ok) {
@@ -214,7 +216,7 @@ export default function ListingForm({
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a verified email to display" />
+                    <SelectValue placeholder="Select a category to display" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>

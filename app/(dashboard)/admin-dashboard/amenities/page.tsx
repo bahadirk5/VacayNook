@@ -4,12 +4,12 @@ import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
 import getCurrentUser from "@/lib/session"
 import { AmenitiesModal } from "@/components/amenities-modal"
+import { DataTable } from "@/components/data-table"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
 import { DashboardHeader } from "@/components/header"
 import { DashboardShell } from "@/components/shell"
 
 import { columns } from "./components/columns"
-import { DataTable } from "./components/data-table"
 
 export const metadata = {
   title: "Amenities",
@@ -30,9 +30,7 @@ export default async function Amenities() {
       </DashboardHeader>
       <div>
         {amenities?.length ? (
-          <div className="container mx-auto py-10">
-            <DataTable columns={columns} data={amenities} />
-          </div>
+          <DataTable columns={columns} data={amenities} />
         ) : (
           <EmptyPlaceholder>
             <EmptyPlaceholder.Icon name="post" />

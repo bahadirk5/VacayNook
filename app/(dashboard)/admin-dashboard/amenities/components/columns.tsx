@@ -4,7 +4,7 @@ import * as React from "react"
 import { AmenitiesTitles } from "@prisma/client"
 import { ColumnDef } from "@tanstack/react-table"
 
-import { DataTableColumnHeader } from "./data-table-column-header"
+import { DataTableColumnHeader } from "@/components/data-table-column-header"
 import { DataTableRowActions } from "./data-table-row-actions"
 
 // This type is used to define the shape of our data.
