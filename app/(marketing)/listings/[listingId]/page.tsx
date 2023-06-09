@@ -72,10 +72,7 @@ export default async function ListingPage({ params }: ListingPageProps) {
           </Dialog>
         </div>
         {listing.imageSrc.slice(1, 5).map((image) => (
-          <div
-            key={image.publicId}
-            className="invisible w-full rounded md:visible"
-          >
+          <div key={image.publicId} className="hidden w-full rounded md:block">
             <Image
               src={image.url || ""}
               alt="listing"
@@ -86,7 +83,7 @@ export default async function ListingPage({ params }: ListingPageProps) {
           </div>
         ))}
       </div>
-      <div className="mt-10 grid grid-cols-3 gap-10">
+      <div className="mt-7 grid grid-cols-1 gap-10 md:grid-cols-3">
         <div className="col-span-2">
           {/* Genral Info */}
           <div className="rounded-md border p-4">
@@ -101,13 +98,14 @@ export default async function ListingPage({ params }: ListingPageProps) {
             <Separator className="my-4 w-1/2" />
             <div className="flex gap-10">
               <p className="mt-2 flex text-muted-foreground">
-                <User /> {listing?.guestCount} guests
+                <User className="mr-2 h-6 w-6" /> {listing?.guestCount} guests
               </p>
               <p className="mt-2 flex text-muted-foreground">
-                <BedDouble /> {listing?.roomCount} bedrooms
+                <BedDouble className="mr-2 h-6 w-6" /> {listing?.roomCount}{" "}
+                bedrooms
               </p>
               <p className="mt-2 flex text-muted-foreground">
-                <Bath /> {listing?.bathRoomCount} baths
+                <Bath className="mr-2 h-6 w-6" /> {listing?.bathRoomCount} baths
               </p>
             </div>
           </div>
@@ -132,7 +130,7 @@ export default async function ListingPage({ params }: ListingPageProps) {
             ))}
           </div>
         </div>
-        <div>05</div>
+        <div className="rounded-md border p-4">Cominication</div>
       </div>
       {/* @ts-ignore */}
       <MapBox latlng={listing.latlng} />
