@@ -5,6 +5,16 @@ import { ImagePlus } from "lucide-react"
 import { db } from "@/lib/db"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 async function getListing(listingId: Listing["id"]) {
   return await db.listing.findFirst({
@@ -34,13 +44,41 @@ export default async function ListingPage({ params }: ListingPageProps) {
             height={960}
             className="h-[500px] rounded-lg object-cover"
           />
-          <Button
-            variant="secondary"
-            className={cn("absolute bottom-3 left-3 z-10")}
-          >
-            <ImagePlus className="mr-2 h-4 w-4" />
-            Show all photos
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button
+                variant="secondary"
+                className={cn("absolute bottom-3 left-3 z-10")}
+              >
+                <ImagePlus className="mr-2 h-4 w-4" />
+                Show all photos
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-full">
+              <ScrollArea className="h-[900px] w-full">
+                <div className="mx-auto columns-1 gap-4 space-y-4 p-5 sm:columns-2 xl:columns-3">
+                  {listing?.imageSrc.map((image) => (
+                    <Image
+                      src={image.url}
+                      alt="listing photo"
+                      width={720}
+                      height={480}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 350px"
+                    />
+                  ))}
+                  {listing?.imageSrc.map((image) => (
+                    <Image
+                      src={image.url}
+                      alt="listing photo"
+                      width={720}
+                      height={480}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 350px"
+                    />
+                  ))}
+                </div>
+              </ScrollArea>
+            </DialogContent>
+          </Dialog>
         </div>
         {listing?.imageSrc.slice(1, 5).map((image) => (
           <div
