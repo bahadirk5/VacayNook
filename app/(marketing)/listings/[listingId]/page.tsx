@@ -4,11 +4,11 @@ import { Listing } from "@prisma/client"
 import { Bath, BedDouble, ImagePlus, MapPin, User, Wifi } from "lucide-react"
 
 import { db } from "@/lib/db"
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
+import { DynamicIcons } from "@/components/dynamic-icons"
 import { MapBox } from "@/components/map-box"
 
 async function getListing(listingId: Listing["id"]) {
@@ -48,7 +48,7 @@ export default async function ListingPage({ params }: ListingPageProps) {
             <DialogTrigger asChild>
               <Button
                 variant="secondary"
-                className={cn("absolute bottom-3 left-3 z-10")}
+                className="absolute bottom-3 left-3 z-10"
               >
                 <ImagePlus className="mr-2 h-4 w-4" />
                 Show all photos
@@ -131,7 +131,8 @@ export default async function ListingPage({ params }: ListingPageProps) {
             <div className="grid grid-cols-3">
               {listing?.amenities.map((amenities) => (
                 <p className="flex">
-                  <Wifi className="mr-2 h-6 w-6" />
+                  {/* @ts-ignore */}
+                  <DynamicIcons name={amenities.icon} className="mr-2 h-6 w-6" />
                   <span className="text-muted-foreground">
                     {amenities.name}
                   </span>

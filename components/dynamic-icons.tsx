@@ -1,17 +1,16 @@
 import * as React from "react"
-
-import { Icons } from "@/components/icons"
+import * as icons from "lucide-react"
 
 interface DynamicIconProps extends Partial<React.SVGProps<SVGSVGElement>> {
-  name: keyof typeof Icons
+  name: keyof typeof icons
 }
 
 export function DynamicIcons({ name, className, ...props }: DynamicIconProps) {
-  const Icon = Icons[name]
+  const Icon = icons[name]
 
   if (!Icon) {
     return null
   }
-
+  // @ts-ignore
   return <Icon className={className} {...props} />
 }
