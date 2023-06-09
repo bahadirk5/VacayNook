@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api"
+import { GoogleMap, MarkerF, useLoadScript } from "@react-google-maps/api"
 
 import { Card } from "@/components/ui/card"
 import { PlacesAutocomplete } from "@/components/autocomplete"
@@ -40,7 +40,7 @@ export function LocationForm({ value, onChange }: LocationProps) {
           mapContainerClassName="map-container"
         >
           {value && (
-            <Marker
+            <MarkerF
               position={value}
               draggable={true}
               onDragEnd={handleMarkerChange}
