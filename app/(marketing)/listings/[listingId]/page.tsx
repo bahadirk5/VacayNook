@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { notFound } from "next/navigation"
 import { Listing } from "@prisma/client"
-import { Bath, BedDouble, ImagePlus, MapPin, User } from "lucide-react"
+import { Bath, BedDouble, ImagePlus, MapPin, User, Wifi } from "lucide-react"
 
 import { db } from "@/lib/db"
 import { cn } from "@/lib/utils"
@@ -124,13 +124,25 @@ export default async function ListingPage({ params }: ListingPageProps) {
             <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
               Amenities
             </h4>
+            <p className="mt-2 flex text-muted-foreground">
+              About the property&apos;s amenities and services
+            </p>
             <Separator className="my-4 w-1/2" />
-            {listing?.amenities.map((amenities) => (
-              <div>{amenities.name}</div>
-            ))}
+            <div className="grid grid-cols-3">
+              {listing?.amenities.map((amenities) => (
+                <p className="flex">
+                  <Wifi className="mr-2 h-6 w-6" />
+                  <span className="text-muted-foreground">
+                    {amenities.name}
+                  </span>
+                </p>
+              ))}
+            </div>
           </div>
         </div>
-        <div className="rounded-md border p-4">Cominication</div>
+        <div>
+          <div className="rounded-md border p-4">Communication</div>
+        </div>
       </div>
       {/* @ts-ignore */}
       <MapBox latlng={listing.latlng} />
