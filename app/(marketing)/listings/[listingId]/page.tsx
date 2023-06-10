@@ -142,7 +142,7 @@ export default async function ListingPage({ params }: ListingPageProps) {
           </div>
         </div>
         <div>
-          <div className="rounded-md border p-4">Communication</div>
+          <div className="rounded-md border p-4">Contact</div>
         </div>
       </div>
       {/* @ts-ignore */}

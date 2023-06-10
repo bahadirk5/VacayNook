@@ -55,6 +55,7 @@ model User {
   accounts Account[]
   sessions Session[]
   Listing  Listing[]
+  Comment  Comment[]
 
   @@map(name: "users")
 }
@@ -85,6 +86,7 @@ model Listing {
 
   imageSrc  Images[]
   amenities Amenities[]
+  Comment   Comment[]
 
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
@@ -93,9 +95,24 @@ model Listing {
   @@index([categoryId])
 }
 
+model Comment {
+  id        String   @id @default(cuid())
+  message   String
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  userId    String
+  listingId String
+  published Boolean  @default(false)
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([listingId])
+}
+
 model Images {
-  url       String  @unique
-  publicId  String  @unique
+  url       String @unique
+  publicId  String @unique
   listingId String
 
   Listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
