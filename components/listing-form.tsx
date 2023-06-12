@@ -122,8 +122,6 @@ export default function ListingForm({
       })
     }
 
-    console.log(response)
-
     setIsSaving(false)
 
     if (!response?.ok) {

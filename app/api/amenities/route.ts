@@ -52,8 +52,6 @@ export async function POST(req: Request) {
     const json = await req.json()
     const body = amenitiesCreateSchema.parse(json)
 
-    console.log("body", body)
-
     const amenities = await db.amenities.create({
       data: {
         name: body.name,
@@ -66,7 +64,6 @@ export async function POST(req: Request) {
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 })
     }
-    console.log("error", error)
     return new Response(null, { status: 500 })
   }
 }

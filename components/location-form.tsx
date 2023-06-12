@@ -22,7 +22,6 @@ export function LocationForm({ value, onChange }: LocationProps) {
 
   function handleMarkerChange(e: any) {
     const latlng = { lat: e.latLng.lat(), lng: e.latLng.lng() }
-    console.log("latlng", latlng)
     onChange(latlng)
   }
 

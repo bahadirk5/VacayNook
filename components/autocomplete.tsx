@@ -37,7 +37,6 @@ export function PlacesAutocomplete({ setSelected }: PlacesAutocompleteProps) {
       getGeocode({ address: description }).then((results) => {
         const { lat, lng } = getLatLng(results[0])
         setSelected({ lat, lng })
-        console.log({ lat, lng })
       })
     }
 

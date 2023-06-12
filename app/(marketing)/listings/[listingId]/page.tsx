@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import { DynamicIcons } from "@/components/dynamic-icons"
+import { ImageGallery } from "@/components/image-gallery"
 import { MapBox } from "@/components/map-box"
 
 async function getListing(listingId: Listing["id"]) {
@@ -56,16 +57,8 @@ export default async function ListingPage({ params }: ListingPageProps) {
             </DialogTrigger>
             <DialogContent className="sm:max-w-full">
               <ScrollArea className="h-[900px] w-full">
-                <div className="mx-auto columns-1 gap-4 space-y-4 p-5 sm:columns-2 xl:columns-3">
-                  {listing.imageSrc.map((image) => (
-                    <Image
-                      src={image.url}
-                      alt="listing photo"
-                      width={720}
-                      height={480}
-                      sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 350px"
-                    />
-                  ))}
+                <div className=" max-w-5xl mx-auto columns-1 gap-4 space-y-4 p-5 sm:columns-2 xl:columns-3">
+                  <ImageGallery slides={listing.imageSrc} />
                 </div>
               </ScrollArea>
             </DialogContent>
@@ -131,8 +124,11 @@ export default async function ListingPage({ params }: ListingPageProps) {
             <div className="grid grid-cols-3">
               {listing?.amenities.map((amenities) => (
                 <p className="flex">
-                  {/* @ts-ignore */}
-                  <DynamicIcons name={amenities.icon} className="mr-2 h-6 w-6" />
+                  <DynamicIcons
+                    // @ts-ignore
+                    name={amenities.icon}
+                    className="mr-2 h-6 w-6"
+                  />
                   <span className="text-muted-foreground">
                     {amenities.name}
                   </span>

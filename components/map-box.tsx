@@ -13,7 +13,6 @@ interface LocationProps {
 }
 
 export function MapBox({ latlng }: LocationProps) {
-  console.log(latlng)
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
     libraries: ["places"],
