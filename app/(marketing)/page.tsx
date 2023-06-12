@@ -7,6 +7,8 @@ import { Categories } from "@/components/categories"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
 import PropertyCard from "@/components/property-card"
 
+export const dynamic = "force-dynamic"
+
 interface HomeProps {
   searchParams: IListingsParams
 }
