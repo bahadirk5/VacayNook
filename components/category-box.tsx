@@ -13,7 +13,7 @@ interface CategoryBoxProps {
   selected?: boolean
 }
 
-const CategoryBox: React.FC<CategoryBoxProps> = ({ label, icon, selected }) => {
+export function CategoryBox({ label, icon, selected }: CategoryBoxProps) {
   const router = useRouter()
   const params = useSearchParams()
 
@@ -48,15 +48,13 @@ const CategoryBox: React.FC<CategoryBoxProps> = ({ label, icon, selected }) => {
     <div
       onClick={handleClick}
       className={cn(
-        "flex flex-col items-center text-muted-foreground justify-center gap-2 p-3 border-b-2 transition cursor-pointer",
+        "flex cursor-pointer flex-col items-center justify-center gap-2 border-b-2 p-3 text-muted-foreground transition",
         selected ? "border-b-primary text-primary" : "border-transparent"
       )}
     >
       {/* @ts-ignore */}
       <DynamicIcons name={icon} />
-      <div className="font-medium text-sm">{label}</div>
+      <div className="text-sm font-medium">{label}</div>
     </div>
   )
 }
-
-export default CategoryBox

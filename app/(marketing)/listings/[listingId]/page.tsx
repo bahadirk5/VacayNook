@@ -57,7 +57,7 @@ export default async function ListingPage({ params }: ListingPageProps) {
             </DialogTrigger>
             <DialogContent className="sm:max-w-full">
               <ScrollArea className="h-[900px] w-full">
-                <div className=" max-w-5xl mx-auto columns-1 gap-4 space-y-4 p-5 sm:columns-2 xl:columns-3">
+                <div className=" mx-auto max-w-5xl columns-1 gap-4 space-y-4 p-5 sm:columns-2 xl:columns-3">
                   <ImageGallery slides={listing.imageSrc} />
                 </div>
               </ScrollArea>

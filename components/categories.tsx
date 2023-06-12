@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation"
 import { Category } from "@prisma/client"
 
-import CategoryBox from "@/components/category-box"
+import { CategoryBox } from "@/components/category-box"
 
 interface CategoriesProps {
   categories: Category[]
@@ -15,7 +15,7 @@ export function Categories({ categories }: CategoriesProps) {
 
   return (
     <div className="container">
-      <div className="pt-4 flex flex-row items-center justify-between overflow-x-auto">
+      <div className="flex flex-row items-center justify-between overflow-x-auto pt-4">
         {categories.map((item) => (
           <CategoryBox
             key={item.id}
