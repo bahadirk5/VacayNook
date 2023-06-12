@@ -27,7 +27,7 @@ export function ImageGallery({ slides }: ImageGalleryProps) {
       {slides.map((image, index) => (
         <Image
           src={image.url}
-          className="rounded-lg cursor-pointer"
+          className="cursor-pointer rounded-lg"
           alt="listing photo"
           width={720}
           height={480}
