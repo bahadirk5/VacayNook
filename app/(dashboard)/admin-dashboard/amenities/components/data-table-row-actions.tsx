@@ -4,7 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Row } from "@tanstack/react-table"
-import { MoreHorizontal, Pen, Trash } from "lucide-react"
+import { MoreHorizontal, Edit, Trash } from "lucide-react"
 
 import {
   AlertDialog,
@@ -76,7 +76,7 @@ export function DataTableRowActions<TData>({
               href={`/admin-dashboard/amenities/${task.id}`}
               className="flex w-full"
             >
-              <Pen className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+              <Edit className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
               Edit
             </Link>
           </DropdownMenuItem>

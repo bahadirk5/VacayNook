@@ -4,7 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Row } from "@tanstack/react-table"
-import { Activity, Image, MoreHorizontal, Pen, Trash } from "lucide-react"
+import { Activity, Image, MoreHorizontal, Edit, Trash } from "lucide-react"
 
 import {
   AlertDialog,
@@ -31,8 +31,6 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
 
@@ -113,7 +111,7 @@ export function DataTableRowActions<TData>({
               href={`/post/${task.id}`}
               className="flex w-full items-center"
             >
-              <Pen className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+              <Edit className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
               Edit
             </Link>
           </DropdownMenuItem>
