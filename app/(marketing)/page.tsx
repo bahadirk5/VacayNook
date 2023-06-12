@@ -18,16 +18,16 @@ export default async function IndexPage({ searchParams }: HomeProps) {
   const categories = await db.category.findMany()
 
   return (
-    <>
+    <div>
       <Categories categories={categories} />
       {listings && listings.length > 0 ? (
-        <section className="grid-col-1 container grid gap-6 pb-8 pt-6 sm:grid-cols-2 md:grid-cols-3 md:py-10 lg:grid-cols-4 xl:grid-cols-5 ">
+        <section className="grid-col-1 container grid gap-6 pb-8 pt-6 sm:grid-cols-2 md:grid-cols-3 md:py-4 lg:grid-cols-4 xl:grid-cols-5 ">
           {listings.map((property) => (
             <PropertyCard key={property.id} listing={property} />
           ))}
         </section>
       ) : (
-        <div className="container mt-10">
+        <div className="container mt-4">
           <EmptyPlaceholder>
             <EmptyPlaceholder.Icon name="post" />
             <EmptyPlaceholder.Title>No exact matches</EmptyPlaceholder.Title>
@@ -40,6 +40,6 @@ export default async function IndexPage({ searchParams }: HomeProps) {
           </EmptyPlaceholder>
         </div>
       )}
-    </>
+    </div>
   )
 }
