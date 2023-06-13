@@ -22,7 +22,7 @@ async function getListing(listingId: Listing["id"]) {
 }
 
 interface UpdateCategoryProps {
-  params: { listingId: string }
+  params: { postId: string }
 }
 
 export default async function UpdateListing({ params }: UpdateCategoryProps) {
@@ -35,7 +35,7 @@ export default async function UpdateListing({ params }: UpdateCategoryProps) {
   const categories = await db.category.findMany()
   const amenities = await db.amenities.findMany()
 
-  const listing = await getListing(params.listingId)
+  const listing = await getListing(params.postId)
 
   if (!listing) {
     notFound()

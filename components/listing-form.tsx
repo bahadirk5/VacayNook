@@ -92,7 +92,7 @@ export default function ListingForm({
       //@ts-ignore
       latlng: listing?.latlng,
       //@ts-ignore
-      amenities: listing?.amenities.map((e) => e.id),
+      amenities: listing?.amenities.map((e) => e.id) || [],
     },
   })
 

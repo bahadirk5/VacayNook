@@ -26,6 +26,41 @@ const routeContextSchema = z.object({
   }),
 })
 
+export async function DELETE(
+  req: Request,
+  context: z.infer<typeof routeContextSchema>
+) {
+  try {
+    // Validate the route params.
+    const { params } = routeContextSchema.parse(context)
+
+    const session = await getServerSession(authOptions)
+
+    if (!session) {
+      return new Response("Unauthorized", { status: 403 })
+    }
+
+    if (session.user?.role !== "ADMIN") {
+      return new Response("Unauthorized", { status: 403 })
+    }
+
+    // Delete the listing.
+    await db.listing.delete({
+      where: {
+        id: params.listingId as string,
+      },
+    })
+
+    return new Response(null, { status: 204 })
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return new Response(JSON.stringify(error.issues), { status: 422 })
+    }
+
+    return new Response(null, { status: 500 })
+  }
+}
+
 export async function PATCH(
   req: Request,
   context: z.infer<typeof routeContextSchema>
@@ -66,7 +101,7 @@ export async function PATCH(
         userId: session.user.id,
         categoryId: body.categoryId,
         amenities: {
-          connect: body.amenities.map((amenities) => ({
+          set: body.amenities.map((amenities) => ({
             id: amenities,
           })),
         },
