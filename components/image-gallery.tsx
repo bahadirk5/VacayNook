@@ -26,12 +26,16 @@ export function ImageGallery({ slides }: ImageGalleryProps) {
     <>
       {slides.map((image, index) => (
         <Image
+          key={image.url}
           src={image.url}
           className="cursor-pointer rounded-lg"
           alt="listing photo"
           width={720}
           height={480}
-          onClick={() => setIndex(index)}
+          onClick={() => {
+            document.body.style.pointerEvents = ""
+            setIndex(index)
+          }}
         />
       ))}
 

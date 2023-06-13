@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { notFound } from "next/navigation"
 import { Listing } from "@prisma/client"
-import { Bath, BedDouble, ImagePlus, MapPin, User, Wifi } from "lucide-react"
+import { Bath, BedDouble, ImagePlus, MapPin, User } from "lucide-react"
 
 import { db } from "@/lib/db"
 import { Button } from "@/components/ui/button"
@@ -123,7 +123,7 @@ export default async function ListingPage({ params }: ListingPageProps) {
             <Separator className="my-4 w-1/2" />
             <div className="grid grid-cols-3">
               {listing?.amenities.map((amenities) => (
-                <p className="flex">
+                <p key={amenities.id} className="flex">
                   <DynamicIcons
                     // @ts-ignore
                     name={amenities.icon}
