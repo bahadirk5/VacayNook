@@ -143,6 +143,7 @@ export default function ListingForm({
     }
 
     router.push("/admin-dashboard")
+    router.refresh()
   }
 
   return (

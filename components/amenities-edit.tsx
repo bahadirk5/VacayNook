@@ -102,6 +102,7 @@ export function AmenitiesEdit({ amenities }: AmenitiesEditProps) {
     }
 
     router.push("/admin-dashboard/amenities")
+    router.refresh()
   }
 
   return (

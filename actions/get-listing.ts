@@ -8,7 +8,9 @@ export default async function getListings(params: IListingsParams) {
   try {
     const { category } = params
 
-    let query: any = {}
+    let query: any = {
+      published: true
+    }
 
     if (category) {
       const selectedCategory = await db.category.findFirst({

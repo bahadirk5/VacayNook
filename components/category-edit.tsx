@@ -70,6 +70,7 @@ export function CategoryEdit({ category }: CategoryEditProps) {
     }
 
     router.push("/admin-dashboard/category")
+    router.refresh()
   }
 
   return (
