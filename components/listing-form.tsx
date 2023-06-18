@@ -59,13 +59,13 @@ const postFormSchema = z.object({
     lat: z.number(),
     lng: z.number(),
   }),
-  roomCount: z.number().max(3),
-  bathRoomCount: z.number().max(3),
-  bedCount: z.number().max(3),
-  adultCount: z.number().max(3),
-  childrenCount: z.number().max(3),
-  infantCount: z.number().max(3),
-  price: z.number(),
+  roomCount: z.coerce.number().min(1),
+  bathRoomCount: z.coerce.number(),
+  bedCount: z.coerce.number().min(1),
+  adultCount: z.coerce.number().min(1),
+  childrenCount: z.coerce.number(),
+  infantCount: z.coerce.number(),
+  price: z.coerce.number().min(1),
 })
 
 type PostFormValues = z.infer<typeof postFormSchema>
@@ -87,13 +87,14 @@ export default function ListingForm({
       title: listing?.title,
       description: listing?.description,
       location: listing?.location,
-      price: listing?.price,
+      price: listing?.price || 1,
       categoryId: listing?.categoryId,
-      roomCount: listing?.roomCount,
-      bathRoomCount: listing?.bathRoomCount,
-      adultCount: listing?.adultCount,
-      childrenCount: listing?.childrenCount,
-      infantCount: listing?.infantCount,
+      roomCount: listing?.roomCount || 1,
+      bathRoomCount: listing?.bathRoomCount || 1,
+      bedCount: listing?.bathRoomCount || 1,
+      adultCount: listing?.adultCount || 1,
+      childrenCount: listing?.childrenCount || 1,
+      infantCount: listing?.infantCount || 1,
       //@ts-ignore
       latlng: listing?.latlng,
       //@ts-ignore
@@ -105,51 +106,50 @@ export default function ListingForm({
   const router = useRouter()
 
   async function onSubmit(data: PostFormValues) {
-    toast(<pre>{JSON.stringify(data)}</pre>)
-    // setIsSaving(true)
+    setIsSaving(true)
 
-    // let response: any
+    let response: any
 
-    // if (listing?.id) {
-    //   response = await fetch(`/api/listing/${listing.id}`, {
-    //     method: "PATCH",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(data),
-    //   })
-    // } else {
-    //   response = await fetch("/api/listing", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(data),
-    //   })
-    // }
+    if (listing?.id) {
+      response = await fetch(`/api/listing/${listing.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+    } else {
+      response = await fetch("/api/listing", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+    }
 
-    // setIsSaving(false)
+    setIsSaving(false)
 
-    // if (!response?.ok) {
-    //   return toast({
-    //     title: "Something went wrong.",
-    //     description: "Your lisitng was not created. Please try again.",
-    //     variant: "destructive",
-    //   })
-    // }
+    if (!response?.ok) {
+      return toast({
+        title: "Something went wrong.",
+        description: "Your lisitng was not created. Please try again.",
+        variant: "destructive",
+      })
+    }
 
-    // if (listing?.id) {
-    //   toast({
-    //     description: "Your listing has been updated.",
-    //   })
-    // } else {
-    //   toast({
-    //     description: "Your listing has been created.",
-    //   })
-    // }
+    if (listing?.id) {
+      toast({
+        description: "Your listing has been updated.",
+      })
+    } else {
+      toast({
+        description: "Your listing has been created.",
+      })
+    }
 
-    // router.push("/admin-dashboard")
-    // router.refresh()
+    router.push("/admin-dashboard")
+    router.refresh()
   }
 
   return (
