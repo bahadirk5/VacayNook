@@ -9,8 +9,10 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import { DynamicIcons } from "@/components/dynamic-icons"
+import { Icons } from "@/components/icons"
 import { ImageGallery } from "@/components/image-gallery"
 import { MapBox } from "@/components/map-box"
+import { ReservationCard } from "@/components/reservation-card"
 
 async function getListing(listingId: Listing["id"]) {
   return await db.listing.findFirst({
@@ -91,7 +93,7 @@ export default async function ListingPage({ params }: ListingPageProps) {
             <Separator className="my-4 w-1/2" />
             <div className="flex gap-10">
               <p className="mt-2 flex text-muted-foreground">
-                <User className="mr-2 h-6 w-6" /> {listing?.guestCount} guests
+                <User className="mr-2 h-6 w-6" /> {listing?.adultCount} guests
               </p>
               <p className="mt-2 flex text-muted-foreground">
                 <BedDouble className="mr-2 h-6 w-6" /> {listing?.roomCount}{" "}
@@ -138,7 +140,7 @@ export default async function ListingPage({ params }: ListingPageProps) {
           </div>
         </div>
         <div>
-          <div className="rounded-md border p-4">Contact</div>
+          <ReservationCard price={listing.price} />
         </div>
       </div>
       {/* @ts-ignore */}

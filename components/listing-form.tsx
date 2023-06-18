@@ -59,10 +59,13 @@ const postFormSchema = z.object({
     lat: z.number(),
     lng: z.number(),
   }),
-  roomCount: z.string().max(3),
-  bathRoomCount: z.string().max(3),
-  guestCount: z.string().max(3),
-  price: z.string(),
+  roomCount: z.number().max(3),
+  bathRoomCount: z.number().max(3),
+  bedCount: z.number().max(3),
+  adultCount: z.number().max(3),
+  childrenCount: z.number().max(3),
+  infantCount: z.number().max(3),
+  price: z.number(),
 })
 
 type PostFormValues = z.infer<typeof postFormSchema>
@@ -88,7 +91,9 @@ export default function ListingForm({
       categoryId: listing?.categoryId,
       roomCount: listing?.roomCount,
       bathRoomCount: listing?.bathRoomCount,
-      guestCount: listing?.guestCount,
+      adultCount: listing?.adultCount,
+      childrenCount: listing?.childrenCount,
+      infantCount: listing?.infantCount,
       //@ts-ignore
       latlng: listing?.latlng,
       //@ts-ignore
@@ -100,50 +105,51 @@ export default function ListingForm({
   const router = useRouter()
 
   async function onSubmit(data: PostFormValues) {
-    setIsSaving(true)
+    toast(<pre>{JSON.stringify(data)}</pre>)
+    // setIsSaving(true)
 
-    let response: any
+    // let response: any
 
-    if (listing?.id) {
-      response = await fetch(`/api/listing/${listing.id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-    } else {
-      response = await fetch("/api/listing", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-    }
+    // if (listing?.id) {
+    //   response = await fetch(`/api/listing/${listing.id}`, {
+    //     method: "PATCH",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(data),
+    //   })
+    // } else {
+    //   response = await fetch("/api/listing", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(data),
+    //   })
+    // }
 
-    setIsSaving(false)
+    // setIsSaving(false)
 
-    if (!response?.ok) {
-      return toast({
-        title: "Something went wrong.",
-        description: "Your lisitng was not created. Please try again.",
-        variant: "destructive",
-      })
-    }
+    // if (!response?.ok) {
+    //   return toast({
+    //     title: "Something went wrong.",
+    //     description: "Your lisitng was not created. Please try again.",
+    //     variant: "destructive",
+    //   })
+    // }
 
-    if (listing?.id) {
-      toast({
-        description: "Your listing has been updated.",
-      })
-    } else {
-      toast({
-        description: "Your listing has been created.",
-      })
-    }
+    // if (listing?.id) {
+    //   toast({
+    //     description: "Your listing has been updated.",
+    //   })
+    // } else {
+    //   toast({
+    //     description: "Your listing has been created.",
+    //   })
+    // }
 
-    router.push("/admin-dashboard")
-    router.refresh()
+    // router.push("/admin-dashboard")
+    // router.refresh()
   }
 
   return (
@@ -163,7 +169,7 @@ export default function ListingForm({
             <FormItem>
               <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input {...field} />
               </FormControl>
               <FormDescription>
                 This is your public display property name. You can change this
@@ -180,11 +186,7 @@ export default function ListingForm({
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea
-                  placeholder="Tell us a little bit about yourself"
-                  className="resize-none"
-                  {...field}
-                />
+                <Textarea {...field} />
               </FormControl>
               <FormDescription>
                 You can <span>@mention</span> other users and organizations to
@@ -201,7 +203,7 @@ export default function ListingForm({
             <FormItem>
               <FormLabel>Location</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input {...field} />
               </FormControl>
               <FormDescription>
                 This is your public display property name. You can change this
@@ -243,7 +245,7 @@ export default function ListingForm({
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a category to display" />
+                    <SelectValue />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -269,6 +271,57 @@ export default function ListingForm({
           <Separator className="my-7" />
         </div>
         <div className="grid grid-cols-3 gap-4">
+          <FormField
+            control={form.control}
+            name="adultCount"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Adult count</FormLabel>
+                <FormControl>
+                  <Input type="number" {...field} />
+                </FormControl>
+                <FormDescription>
+                  This is your public display property name. You can change this
+                  any time.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="childrenCount"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Children count</FormLabel>
+                <FormControl>
+                  <Input type="number" {...field} />
+                </FormControl>
+                <FormDescription>
+                  This is your public display property name. You can change this
+                  any time.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="infantCount"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Infant count</FormLabel>
+                <FormControl>
+                  <Input type="number" {...field} />
+                </FormControl>
+                <FormDescription>
+                  This is your public display property name. You can change this
+                  any time.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="roomCount"
@@ -305,10 +358,10 @@ export default function ListingForm({
           />
           <FormField
             control={form.control}
-            name="guestCount"
+            name="bedCount"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Guest count</FormLabel>
+                <FormLabel>Bed count</FormLabel>
                 <FormControl>
                   <Input type="number" {...field} />
                 </FormControl>

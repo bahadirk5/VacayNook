@@ -73,10 +73,13 @@ model Listing {
   title         String
   description   String
   published     Boolean  @default(false)
-  roomCount     String
-  bathRoomCount String
-  guestCount    String
-  price         String
+  roomCount     Int
+  bathRoomCount Int
+  bedCount      Int
+  adultCount    Int
+  childrenCount Int
+  infantCount   Int
+  price         Int
   location      String
   latlng        Json
   createdAt     DateTime @default(now()) @map(name: "created_at")

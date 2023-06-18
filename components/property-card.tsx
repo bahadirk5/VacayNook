@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation"
 import { Amenities, Category, Images, Listing } from "@prisma/client"
 
-import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 
 import { ImageSlider } from "./image-slider"

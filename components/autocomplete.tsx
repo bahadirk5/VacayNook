@@ -6,6 +6,7 @@ import usePlacesAutocomplete, {
 } from "use-places-autocomplete"
 
 import { Input } from "@/components/ui/input"
+import { Separator } from "@/components/ui/separator"
 
 interface PlacesAutocompleteProps {
   setSelected: any
@@ -48,9 +49,19 @@ export function PlacesAutocomplete({ setSelected }: PlacesAutocompleteProps) {
       } = suggestion
 
       return (
-        <li key={place_id} onClick={handleSelect(suggestion)}>
-          <strong>{main_text}</strong> <small>{secondary_text}</small>
-        </li>
+        <>
+          <li
+            key={place_id}
+            className="flex cursor-pointer items-center gap-2 p-1"
+            onClick={handleSelect(suggestion)}
+          >
+            <h4 className="scroll-m-20 font-semibold tracking-tight">
+              {main_text}
+            </h4>
+            <p className="text-sm text-muted-foreground">{secondary_text}</p>
+          </li>
+          <Separator />
+        </>
       )
     })
 
