@@ -45,15 +45,15 @@ export async function DELETE(
   try {
     const { params } = routeContextSchema.parse(context)
 
+    // Delete image in cloudinary.
+    cloudinary.v2.uploader.destroy(params.id)
+
     // Delete image in db.
     await db.images.delete({
       where: {
         publicId: params.id as string,
       },
     })
-
-    // Delete image in cloudinary.
-    cloudinary.v2.uploader.destroy(params.id)
 
     return new Response(null, { status: 204 })
   } catch (error) {

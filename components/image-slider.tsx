@@ -60,12 +60,11 @@ export function ImageSlider({ images }: ImageSliderProps) {
         <div className="flex items-center justify-center gap-2">
           {images.map((_, i) => (
             <div
-              // eslint-disable-next-line tailwindcss/migration-from-tailwind-2
-              className={`
-              h-1 w-1 rounded-full bg-white transition-all ${
+              key={i}
+              className={cn(
+                "h-1 w-1 rounded-full bg-white transition-all",
                 curr === i ? "p-1" : "bg-opacity-50"
-              }
-            `}
+              )}
             />
           ))}
         </div>

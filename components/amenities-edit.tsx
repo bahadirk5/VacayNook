@@ -122,7 +122,7 @@ export function AmenitiesEdit({ amenities }: AmenitiesEditProps) {
                 </FormControl>
                 <SelectContent>
                   {AmenitiesArr.map((amenity) => (
-                    <SelectItem value={amenity.value}>
+                    <SelectItem key={amenity.value} value={amenity.value}>
                       {amenity.label}
                     </SelectItem>
                   ))}
