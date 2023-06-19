@@ -48,8 +48,8 @@ export default function Test() {
         arr.push(data)
       }
       setLinks(arr)
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      throw new Error(error)
     }
     setIsloading(false)
   }
@@ -58,8 +58,8 @@ export default function Test() {
     setIsloading(true)
     try {
       await axios.post(`/api/image/${publicId}`)
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      throw new Error(error)
     }
     setIsloading(false)
   }

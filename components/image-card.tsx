@@ -7,6 +7,7 @@ import axios from "axios"
 
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
+import { toast } from "@/components/ui/use-toast"
 
 export function ImageCard({
   url,
@@ -23,13 +24,17 @@ export function ImageCard({
     setIsloading(true)
     try {
       await axios.delete(`/api/image/${publicId}`)
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: error,
+      })
     }
     setIsloading(false)
   }
   return (
-    <div>
+    <div className="relative">
       <Image
         src={url}
         alt={""}
@@ -38,7 +43,7 @@ export function ImageCard({
         className="rounded-md"
       />
       <Button
-        className="mt-2"
+        className="absolute top-2 right-2"
         disabled={isLoading}
         variant="destructive"
         onClick={async (e: any) => {

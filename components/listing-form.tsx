@@ -66,6 +66,7 @@ const postFormSchema = z.object({
   childrenCount: z.coerce.number(),
   infantCount: z.coerce.number(),
   price: z.coerce.number().min(1),
+  serviceFee: z.coerce.number().min(1),
 })
 
 type PostFormValues = z.infer<typeof postFormSchema>
@@ -87,14 +88,15 @@ export default function ListingForm({
       title: listing?.title,
       description: listing?.description,
       location: listing?.location,
-      price: listing?.price || 1,
+      price: listing?.price,
+      serviceFee: listing?.serviceFee,
       categoryId: listing?.categoryId,
-      roomCount: listing?.roomCount || 1,
-      bathRoomCount: listing?.bathRoomCount || 1,
-      bedCount: listing?.bathRoomCount || 1,
-      adultCount: listing?.adultCount || 1,
-      childrenCount: listing?.childrenCount || 1,
-      infantCount: listing?.infantCount || 1,
+      roomCount: listing?.roomCount,
+      bathRoomCount: listing?.bathRoomCount,
+      bedCount: listing?.bathRoomCount,
+      adultCount: listing?.adultCount,
+      childrenCount: listing?.childrenCount,
+      infantCount: listing?.infantCount,
       //@ts-ignore
       latlng: listing?.latlng,
       //@ts-ignore
@@ -213,23 +215,42 @@ export default function ListingForm({
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="price"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Price</FormLabel>
-              <FormControl>
-                <Input type="number" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display property name. You can change this
-                any time.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="flex flex-row gap-2">
+          <FormField
+            control={form.control}
+            name="price"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Price</FormLabel>
+                <FormControl>
+                  <Input type="number" {...field} />
+                </FormControl>
+                <FormDescription>
+                  This is your public display property name. You can change this
+                  any time.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="serviceFee"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Service fee</FormLabel>
+                <FormControl>
+                  <Input type="number" {...field} />
+                </FormControl>
+                <FormDescription>
+                  This is your public display property name. You can change this
+                  any time.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <div className="space-y-0">
           <h3 className="text-lg font-medium">Categories</h3>
           <p className="text-sm text-muted-foreground">

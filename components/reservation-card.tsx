@@ -25,8 +25,6 @@ export function ReservationCard({ price }: { price: number }) {
     to: addDays(new Date(), 7),
   })
 
-  console.log(typeof adults)
-
   const diffDate = Math.ceil(
     // @ts-ignore
     (new Date(date?.to) - new Date(date?.from)) / (1000 * 60 * 60 * 24)

@@ -14,6 +14,7 @@ const listingUpdateSchema = z.object({
   childrenCount: z.number(),
   infantCount: z.number(),
   price: z.number(),
+  serviceFee: z.number(),
   location: z.string(),
   latlng: z.object({
     lat: z.number(),
@@ -102,6 +103,7 @@ export async function PATCH(
         childrenCount: body.childrenCount,
         infantCount: body.infantCount,
         price: body.price,
+        serviceFee: body.serviceFee,
         location: body.location,
         latlng: body.latlng,
         userId: session.user.id,

@@ -7,6 +7,7 @@ import axios from "axios"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Icons } from "@/components/icons"
+import { toast } from "@/components/ui/use-toast"
 
 async function uploadCloudinary(file: File) {
   const formData = new FormData()
@@ -52,8 +53,12 @@ export function ImageUpload({ listingId }: { listingId: string }) {
       setIsloading(false)
 
       router.refresh()
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: error,
+      })
     }
   }
 

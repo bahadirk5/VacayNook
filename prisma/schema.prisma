@@ -80,6 +80,7 @@ model Listing {
   childrenCount Int
   infantCount   Int
   price         Int
+  serviceFee    Int
   location      String
   latlng        Json
   createdAt     DateTime @default(now()) @map(name: "created_at")
