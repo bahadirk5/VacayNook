@@ -5,7 +5,7 @@ import { Amenities, Category, Images, Listing } from "@prisma/client"
 
 import { Icons } from "@/components/icons"
 
-import { ImageSlider } from "./image-slider"
+import { ImageSlider } from "@/components/image-slider"
 
 interface PropertyCardPorps {
   listing: Listing & {

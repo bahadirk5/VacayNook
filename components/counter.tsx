@@ -9,17 +9,23 @@ import { Label } from "@/components/ui/label"
 interface CounterProps {
   title: string
   value: number
+  max: number
   onChange: (value: number) => void
 }
 
-export function Counter({ title, value, onChange }: CounterProps) {
+export function Counter({ title, value, max, onChange }: CounterProps) {
   const onAdd = React.useCallback(() => {
+    if (value === max) return false
     onChange(value + 1)
   }, [onChange, value])
 
   const onReduce = React.useCallback(() => {
-    if (value === 1) {
-      return
+    if (title === "Adults") {
+      if (value === 1) return
+    } else {
+      if (value === 0) {
+        return
+      }
     }
 
     onChange(value - 1)
@@ -42,6 +48,7 @@ export function Counter({ title, value, onChange }: CounterProps) {
             onClick={onAdd}
             className="h-8 w-8 rounded-full p-2"
             variant="outline"
+            disabled={!onAdd}
           >
             <Plus />
           </Button>

@@ -1,68 +1,82 @@
 "use client"
 
 import * as React from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { format } from "date-fns"
+import { useRouter, useSearchParams } from "next/navigation"
+import { addDays, format } from "date-fns"
 import { Calendar as CalendarIcon, CheckSquare } from "lucide-react"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import qs from "query-string"
+import { DateRange } from "react-day-picker"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { toast } from "@/components/ui/use-toast"
 import { Counter } from "@/components/counter"
 import { Icons } from "@/components/icons"
 
-const reservationFormSchema = z.object({
-  date: z.object({
-    from: z.date(),
-    to: z.date(),
-  }),
-  adults: z.coerce.number(),
-  children: z.coerce.number(),
-  infants: z.coerce.number(),
-})
+import { Separator } from "./ui/separator"
 
-type ReservationFormValues = z.infer<typeof reservationFormSchema>
+interface ReservationCardProps {
+  listingId: string
+  price: number
+  adultsCount: number
+  childrenCount: number
+  infantsCount: number
+  serviceFee: number
+}
 
-export function ReservationCard({ price }: { price: number }) {
-  const form = useForm<ReservationFormValues>({
-    resolver: zodResolver(reservationFormSchema),
-    defaultValues: {
-      adults: 1,
-      children: 0,
-      infants: 0,
-    },
+export function ReservationCard({
+  price,
+  adultsCount,
+  childrenCount,
+  infantsCount,
+  serviceFee,
+  listingId,
+}: ReservationCardProps) {
+  const [adults, setAdults] = React.useState<number>(1)
+  const [children, setChildren] = React.useState<number>(0)
+  const [infants, setInfants] = React.useState<number>(0)
+  const [date, setDate] = React.useState<DateRange | undefined>({
+    from: new Date(),
+    to: addDays(new Date(), 7),
   })
+
+  const router = useRouter()
+  const params = useSearchParams()
+
+  const diffDate = Math.ceil(
+    // @ts-ignore
+    (new Date(date?.to) - new Date(date?.from)) / (1000 * 60 * 60 * 24)
+  )
 
   const disabledDays = [{ before: new Date() }]
 
-  function onSubmit(data: ReservationFormValues) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    })
-  }
+  const handleClick = React.useCallback(() => {
+    const query: any = {
+      listingId: listingId,
+      adults: adults,
+      children: children,
+      infants: infants,
+      to: date?.to,
+      from: date?.from,
+    }
+
+    const url = qs.stringifyUrl(
+      {
+        url: "/reservation",
+        query: query,
+      },
+      { skipNull: true }
+    )
+
+    router.push(url)
+  }, [router, params, adults, children, infants, date])
 
   return (
     <Card>
@@ -78,141 +92,112 @@ export function ReservationCard({ price }: { price: number }) {
         </div>
       </CardHeader>
       <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="date"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Check in - Check out</FormLabel>
-                  <FormControl>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          id="date"
-                          variant={"outline"}
-                          className={cn(
-                            "w-[300px] justify-start text-left font-normal",
-                            !field?.value && "text-muted-foreground"
-                          )}
-                        >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {field?.value?.from ? (
-                            field.value?.to ? (
-                              <>
-                                {format(field.value.from, "LLL dd, y")} -{" "}
-                                {format(field.value.to, "LLL dd, y")}
-                              </>
-                            ) : (
-                              format(field.value.from, "LLL dd, y")
-                            )
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          initialFocus
-                          mode="range"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          numberOfMonths={2}
-                          disabled={disabledDays}
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="mt-2 space-y-2">
-              <Label htmlFor="guest" className="shrink-0">
-                Guests
-              </Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="w-full justify-start rounded-md"
-                  >
-                    {form.getValues("adults")} Adults,{" "}
-                    {form.getValues("children")} children,{" "}
-                    {form.getValues("infants")} infants
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-80">
-                  <div className="grid gap-4">
-                    <div className="space-y-2">
-                      <p className="text-sm text-muted-foreground">
-                        This place has a maximum of 4 guests, not including
-                        infants.
-                      </p>
-                    </div>
-                    <div className="grid gap-2">
-                      <FormField
-                        control={form.control}
-                        name="adults"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              <Counter
-                                onChange={field.onChange}
-                                value={field.value}
-                                title="Adults"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="children"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              <Counter
-                                onChange={field.onChange}
-                                value={field.value}
-                                title="Children"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="infants"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              <Counter
-                                onChange={field.onChange}
-                                value={field.value}
-                                title="Infants"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                  </div>
-                </PopoverContent>
-              </Popover>
-            </div>
-            <div>
-              <Button className="w-full" type="submit">
-                <CheckSquare className="mr-2 h-4 w-4" /> Reserve
+        <div className="space-y-2">
+          <Label htmlFor="date" className="shrink-0">
+            Check in - Check out
+          </Label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                id="date"
+                variant={"outline"}
+                className={cn(
+                  "w-[300px] justify-start text-left font-normal",
+                  !date && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {date?.from ? (
+                  date.to ? (
+                    <>
+                      {format(date.from, "LLL dd, y")} -{" "}
+                      {format(date.to, "LLL dd, y")}
+                    </>
+                  ) : (
+                    format(date.from, "LLL dd, y")
+                  )
+                ) : (
+                  <span>Pick a date</span>
+                )}
               </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                initialFocus
+                mode="range"
+                defaultMonth={date?.from}
+                selected={date}
+                onSelect={setDate}
+                numberOfMonths={2}
+                disabled={disabledDays}
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
+        <div className="mt-2 space-y-2">
+          <Label htmlFor="guest" className="shrink-0">
+            Guests
+          </Label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className="w-full justify-start rounded-md"
+              >
+                {adults} Adults, {children} children, {infants} infants
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80">
+              <div className="grid gap-4">
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground">
+                    This place has a maximum of 4 guests, not including infants.
+                  </p>
+                </div>
+                <div className="grid gap-2">
+                  <Counter
+                    onChange={(value) => setAdults(value)}
+                    value={adults}
+                    max={adultsCount}
+                    title="Adults"
+                  />
+                  <Counter
+                    onChange={(value) => setChildren(value)}
+                    value={children}
+                    max={childrenCount}
+                    title="Children"
+                  />
+                  <Counter
+                    onChange={(value) => setInfants(value)}
+                    value={infants}
+                    max={infantsCount}
+                    title="Infants"
+                  />
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
+        {diffDate ? (
+          <div className="mt-4 flex flex-col items-end space-y-2">
+            <div className="text-sm">
+              {diffDate} days {diffDate * price}$
             </div>
-          </form>
-        </Form>
+            <div className="text-sm">Service fee {serviceFee}$</div>
+            <Separator className="w-1/2" />
+            <div className="text-sm">
+              Total price {diffDate * price + serviceFee}$
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
       </CardContent>
+      <CardFooter>
+        <Button className="w-full" disabled={!diffDate} onClick={handleClick}>
+          <CheckSquare className="mr-2 h-4 w-4" /> Reserve
+        </Button>
+      </CardFooter>
     </Card>
   )
 }

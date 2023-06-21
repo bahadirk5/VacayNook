@@ -9,7 +9,6 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import { DynamicIcons } from "@/components/dynamic-icons"
-import { Icons } from "@/components/icons"
 import { ImageGallery } from "@/components/image-gallery"
 import { MapBox } from "@/components/map-box"
 import { ReservationCard } from "@/components/reservation-card"
@@ -93,14 +92,15 @@ export default async function ListingPage({ params }: ListingPageProps) {
             <Separator className="my-4 w-1/2" />
             <div className="flex gap-10">
               <p className="mt-2 flex text-muted-foreground">
-                <User className="mr-2 h-6 w-6" /> {listing?.adultCount} guests
+                <User className="mr-2 h-6 w-6" />{" "}
+                {listing.adultCount + listing.childrenCount} guests
               </p>
               <p className="mt-2 flex text-muted-foreground">
-                <BedDouble className="mr-2 h-6 w-6" /> {listing?.roomCount}{" "}
+                <BedDouble className="mr-2 h-6 w-6" /> {listing.roomCount}{" "}
                 bedrooms
               </p>
               <p className="mt-2 flex text-muted-foreground">
-                <Bath className="mr-2 h-6 w-6" /> {listing?.bathRoomCount} baths
+                <Bath className="mr-2 h-6 w-6" /> {listing.bathRoomCount} baths
               </p>
             </div>
           </div>
@@ -140,7 +140,14 @@ export default async function ListingPage({ params }: ListingPageProps) {
           </div>
         </div>
         <div>
-          <ReservationCard price={listing.price} />
+          <ReservationCard
+            listingId={params.listingId}
+            price={listing.price}
+            adultsCount={listing.adultCount}
+            childrenCount={listing.childrenCount}
+            infantsCount={listing.infantCount}
+            serviceFee={listing.serviceFee}
+          />
         </div>
       </div>
       {/* @ts-ignore */}
