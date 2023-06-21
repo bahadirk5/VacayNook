@@ -179,14 +179,19 @@ export function ReservationCard({
           </Popover>
         </div>
         {diffDate ? (
-          <div className="mt-4 flex flex-col items-end space-y-2">
-            <div className="text-sm">
-              {diffDate} days {diffDate * price}$
+          <div className="mt-4 flex flex-col space-y-2">
+            <div className="flex justify-between text-sm">
+              <div>{diffDate} days</div>
+              <div>{diffDate * price}$</div>
             </div>
-            <div className="text-sm">Service fee {serviceFee}$</div>
-            <Separator className="w-1/2" />
-            <div className="text-sm">
-              Total price {diffDate * price + serviceFee}$
+            <div className="flex justify-between text-sm">
+              <div>Service fee</div>
+              <div>{serviceFee}$</div>
+            </div>
+            <Separator />
+            <div className="flex justify-between text-sm">
+              <div>Total price</div>
+              <div>{diffDate * price + serviceFee}$</div>
             </div>
           </div>
         ) : (
