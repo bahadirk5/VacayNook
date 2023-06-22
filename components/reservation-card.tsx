@@ -76,7 +76,7 @@ export function ReservationCard({
     )
 
     router.push(url)
-  }, [router, params, adults, children, infants, date])
+  }, [router, params, adults, children, infants, date, listingId])
 
   return (
     <Card>

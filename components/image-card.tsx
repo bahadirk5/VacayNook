@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation"
 import axios from "axios"
 
 import { Button } from "@/components/ui/button"
-import { Icons } from "@/components/icons"
 import { toast } from "@/components/ui/use-toast"
+import { Icons } from "@/components/icons"
 
 export function ImageCard({
   url,
@@ -43,7 +43,7 @@ export function ImageCard({
         className="rounded-md"
       />
       <Button
-        className="absolute top-2 right-2"
+        className="absolute right-2 top-2"
         disabled={isLoading}
         variant="destructive"
         onClick={async (e: any) => {

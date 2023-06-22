@@ -21,7 +21,7 @@ interface UpdateGuestModalProps {
   childrenCount: number
   infantsCount: number
   adults: number
-  children: number
+  childrn: number
   infants: number
 }
 
@@ -30,11 +30,11 @@ export function UpdateGuestModal({
   childrenCount,
   infantsCount,
   adults,
-  children,
+  childrn,
   infants,
 }: UpdateGuestModalProps) {
   const [adult, setAdult] = React.useState<number>(adults)
-  const [childrn, setChildren] = React.useState<number>(children)
+  const [children, setChildren] = React.useState<number>(childrn)
   const [infant, setInfant] = React.useState<number>(infants)
   const [open, setOpen] = React.useState(false)
 
@@ -51,7 +51,7 @@ export function UpdateGuestModal({
     const updatedQuery: any = {
       ...currentQuery,
       adults: adult,
-      children: childrn,
+      children: children,
       infants: infant,
     }
 
@@ -97,7 +97,7 @@ export function UpdateGuestModal({
             />
             <Counter
               onChange={(value) => setChildren(value)}
-              value={childrn}
+              value={children}
               max={childrenCount}
               title="Children"
             />

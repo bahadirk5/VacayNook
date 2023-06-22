@@ -116,7 +116,7 @@ export default async function Reservation({ searchParams }: ReservationProps) {
               childrenCount={listing.childrenCount}
               infantsCount={listing.infantCount}
               adults={Number(searchParams.adults)}
-              children={Number(searchParams.children)}
+              childrn={Number(searchParams.children)}
               infants={Number(searchParams.infants)}
             />
           </div>
