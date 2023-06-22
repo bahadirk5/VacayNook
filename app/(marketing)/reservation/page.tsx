@@ -11,12 +11,13 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Icons } from "@/components/icons"
+import { UpdateDateModal } from "@/components/update-date-modal"
+import { UpdateGuestModal } from "@/components/update-guest-modal"
 
 interface ReservationProps {
   searchParams: {
@@ -84,9 +85,7 @@ export default async function Reservation({ searchParams }: ReservationProps) {
                 </p>
               </div>
             </div>
-            <div className="cursor-pointer scroll-m-20 border-b text-lg font-medium tracking-tight">
-              Edit
-            </div>
+            <UpdateDateModal from={searchParams.from} to={searchParams.to} />
           </div>
           <div className="mt-5 flex items-center justify-between">
             <div className="flex flex-col">
@@ -112,9 +111,14 @@ export default async function Reservation({ searchParams }: ReservationProps) {
                 </p>
               </div>
             </div>
-            <div className="cursor-pointer scroll-m-20 border-b text-lg font-medium tracking-tight">
-              Edit
-            </div>
+            <UpdateGuestModal
+              adultsCount={listing.adultCount}
+              childrenCount={listing.childrenCount}
+              infantsCount={listing.infantCount}
+              adults={Number(searchParams.adults)}
+              children={Number(searchParams.children)}
+              infants={Number(searchParams.infants)}
+            />
           </div>
           <Separator className="my-10" />
           <Button>Request to book</Button>
