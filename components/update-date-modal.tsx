@@ -61,6 +61,11 @@ export function UpdateDateModal({ from, to }: UpdateDateModalProps) {
     router.push(url)
   }, [router, params, date])
 
+  const diffDate = Math.ceil(
+    // @ts-ignore
+    (new Date(date?.to) - new Date(date?.from)) / (1000 * 60 * 60 * 24)
+  )
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -74,8 +79,9 @@ export function UpdateDateModal({ from, to }: UpdateDateModalProps) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Guests</DialogTitle>
-          <DialogDescription></DialogDescription>
+          <DialogTitle>
+            {diffDate ? <span>{diffDate} nights</span> : "Select dates"}
+          </DialogTitle>
         </DialogHeader>
         <div className="mx-auto">
           <Calendar
@@ -84,7 +90,6 @@ export function UpdateDateModal({ from, to }: UpdateDateModalProps) {
             onSelect={setDate}
             numberOfMonths={2}
             disabled={disabledDays}
-            className=""
           />
         </div>
         <DialogFooter>
