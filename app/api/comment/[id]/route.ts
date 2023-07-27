@@ -6,6 +6,7 @@ import { db } from "@/lib/db"
 
 const commentPostSchema = z.object({
   message: z.string(),
+  name: z.string().optional(),
 })
 
 const routeContextSchema = z.object({
@@ -32,6 +33,7 @@ export async function POST(
 
     await db.comment.create({
       data: {
+        name: payload.name,
         userId: session.user.id,
         listingId: params.id,
         message: payload.message,
@@ -68,6 +70,46 @@ export async function DELETE(
     })
 
     return new Response(null, { status: 204 })
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return new Response(JSON.stringify(error.issues), { status: 422 })
+    }
+
+    return new Response(null, { status: 500 })
+  }
+}
+
+export async function PATCH(
+  req: Request,
+  context: z.infer<typeof routeContextSchema>
+) {
+  try {
+    const { params } = routeContextSchema.parse(context)
+
+    const session = await getServerSession(authOptions)
+
+    if (!session) {
+      return new Response("Unauthorized", { status: 403 })
+    }
+
+    if (session.user?.role !== "ADMIN") {
+      return new Response("Unauthorized", { status: 403 })
+    }
+
+    const body = await req.json()
+    const payload = commentPostSchema.parse(body)
+
+    await db.comment.update({
+      where: {
+        id: params.id,
+      },
+      data: {
+        name: payload.name,
+        message: payload.message,
+      },
+    })
+
+    return new Response(null, { status: 200 })
   } catch (error) {
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 })

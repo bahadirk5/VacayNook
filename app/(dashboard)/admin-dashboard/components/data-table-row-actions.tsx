@@ -4,7 +4,15 @@ import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Row } from "@tanstack/react-table"
-import { Activity, Image, MoreHorizontal, Edit, Trash } from "lucide-react"
+import {
+  Activity,
+  Calendar,
+  Edit,
+  Image,
+  MessageSquare,
+  MoreHorizontal,
+  Trash,
+} from "lucide-react"
 
 import {
   AlertDialog,
@@ -115,7 +123,6 @@ export function DataTableRowActions<TData>({
               Edit
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
           <DropdownMenuItem>
             <Link
               href={`/admin-dashboard/image/${task.id}`}
@@ -124,6 +131,26 @@ export function DataTableRowActions<TData>({
               {/* eslint-disable-next-line jsx-a11y/alt-text */}
               <Image className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
               Image
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link
+              href={`/admin-dashboard/calendar/${task.id}`}
+              className="flex w-full items-center"
+            >
+              {/* eslint-disable-next-line jsx-a11y/alt-text */}
+              <Calendar className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+              Calendar
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link
+              href={`/admin-dashboard/comment/${task.id}`}
+              className="flex w-full items-center"
+            >
+              {/* eslint-disable-next-line jsx-a11y/alt-text */}
+              <MessageSquare className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+              Comments
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />

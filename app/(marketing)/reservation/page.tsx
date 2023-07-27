@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Icons } from "@/components/icons"
+import { SendRequest } from "@/components/send-request"
 import { UpdateDateModal } from "@/components/update-date-modal"
 import { UpdateGuestModal } from "@/components/update-guest-modal"
 
@@ -121,7 +122,7 @@ export default async function Reservation({ searchParams }: ReservationProps) {
             />
           </div>
           <Separator className="my-10" />
-          <Button>Request to book</Button>
+          <SendRequest />
         </div>
         <div className="flex justify-end">
           <Card className="max-w-md">

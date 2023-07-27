@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
+import Comment from "@/components/comment"
 import { DynamicIcons } from "@/components/dynamic-icons"
 import { ImageGallery } from "@/components/image-gallery"
 import { MapBox } from "@/components/map-box"
@@ -20,6 +21,7 @@ async function getListing(listingId: Listing["id"]) {
       amenities: true,
       category: true,
       imageSrc: true,
+      comment: true,
     },
   })
 }
@@ -152,6 +154,19 @@ export default async function ListingPage({ params }: ListingPageProps) {
       </div>
       {/* @ts-ignore */}
       <MapBox latlng={listing.latlng} />
+      <div className="mt-7 rounded-md border p-4">
+        <h4 className="scroll-m-20 text-xl font-semibold tracking-tight mb-5">
+          Comments
+        </h4>
+        {listing.comment.map((comment) => (
+          <Comment
+            image=""
+            name={comment.name}
+            message={comment.message}
+            createdAt={comment.createdAt}
+          />
+        ))}
+      </div>
     </div>
   )
 }

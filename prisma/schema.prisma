@@ -48,14 +48,15 @@ model User {
   emailVerified  DateTime?
   hashedPassword String?
   createdAt      DateTime  @default(now()) @map(name: "created_at")
-  updatedAt      DateTime  @default(now()) @map(name: "updated_at")
+  updatedAt      DateTime  @updatedAt
   image          String?
   role           UserRole  @default(USER)
 
-  accounts Account[]
-  sessions Session[]
-  Listing  Listing[]
-  Comment  Comment[]
+  accounts    Account[]
+  sessions    Session[]
+  Listing     Listing[]
+  Comment     Comment[]
+  Reservation Reservation[]
 
   @@map(name: "users")
 }
@@ -71,7 +72,7 @@ model VerificationToken {
 model Listing {
   id            String   @id @default(cuid())
   title         String
-  description   String
+  description   String   @db.Text
   published     Boolean  @default(false)
   roomCount     Int
   bathRoomCount Int
@@ -84,13 +85,15 @@ model Listing {
   location      String
   latlng        Json
   createdAt     DateTime @default(now()) @map(name: "created_at")
-  updatedAt     DateTime @default(now()) @map(name: "updated_at")
+  updatedAt     DateTime @updatedAt
   userId        String
   categoryId    String
 
-  imageSrc  Images[]
-  amenities Amenities[]
-  Comment   Comment[]
+  imageSrc      Images[]
+  amenities     Amenities[]
+  comment       Comment[]
+  reservation   Reservation[]
+  availableDays AvailableDays[]
 
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
@@ -99,9 +102,38 @@ model Listing {
   @@index([categoryId])
 }
 
+model Reservation {
+  id        String   @id @default(cuid())
+  isPaid    Boolean  @default(false)
+  to        DateTime
+  from      DateTime
+  guests    Int
+  infants   Int
+  userId    String
+  listingId String
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([listingId])
+}
+
+model AvailableDays {
+  id        String   @id @default(cuid())
+  to        DateTime
+  from      DateTime
+  listingId String
+
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@index([listingId])
+}
+
 model Comment {
   id        String   @id @default(cuid())
-  message   String
+  name      String?
+  message   String   @db.Text
   createdAt DateTime @default(now()) @map(name: "created_at")
   userId    String
   listingId String
