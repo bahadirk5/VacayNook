@@ -3,11 +3,13 @@ import { notFound, redirect } from "next/navigation"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
 import getCurrentUser from "@/lib/session"
-import { Calendar } from "@/components/ui/calendar"
 import { AvailabilityCalendar } from "@/components/availability-calendar"
+import { DataTable } from "@/components/data-table"
 import { DashboardHeader } from "@/components/header"
 import { OpenDaysModal } from "@/components/open-days-modal"
 import { DashboardShell } from "@/components/shell"
+
+import { columns } from "../components/columns"
 
 interface CalendarProps {
   params: { listingId: string }
@@ -38,7 +40,6 @@ export default async function ListingCalendar({ params }: CalendarProps) {
     return notFound()
   }
 
-
   return (
     <DashboardShell>
       <DashboardHeader
@@ -53,6 +54,7 @@ export default async function ListingCalendar({ params }: CalendarProps) {
         </div>
       </DashboardHeader>
       <AvailabilityCalendar availableDays={listing.availableDays} />
+      <DataTable columns={columns} data={listing.availableDays} />
     </DashboardShell>
   )
 }

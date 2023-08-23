@@ -20,7 +20,6 @@ export function AvailabilityCalendar({
         return true
       }
     }
-
     return false
   }
 
