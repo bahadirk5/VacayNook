@@ -24,8 +24,8 @@ export async function POST(req: Request) {
     const json = await req.json()
     const body = reservationCreateSchema.parse(json)
 
-    // const data = getTemplateMessageInput(body.phone)
-    // const response = await sendMessage(data)
+    // const data = await getTemplateMessageInput(body.phone)
+    // sendMessage(data)
 
     // const reservation = await db
 

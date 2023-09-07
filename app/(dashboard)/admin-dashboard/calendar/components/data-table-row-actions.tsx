@@ -30,15 +30,15 @@ import { Icons } from "@/components/icons"
 import { availableDaysSchema } from "./schema"
 import { toast } from "@/components/ui/use-toast"
 
-async function deletePost(amenitiesId: string) {
-  const response = await fetch(`/api/amenities/${amenitiesId}`, {
+async function deletePost(availableDaysId: string) {
+  const response = await fetch(`/api/available-days/${availableDaysId}`, {
     method: "DELETE",
   })
 
   if (!response?.ok) {
     toast({
       title: "Something went wrong.",
-      description: "Your amenities was not deleted. Please try again.",
+      description: "Your available days was not deleted. Please try again.",
       variant: "destructive",
     })
   }
@@ -73,7 +73,7 @@ export function DataTableRowActions<TData>({
         <DropdownMenuContent align="end" className="w-[160px]">
           <DropdownMenuItem>
             <Link
-              href={`/admin-dashboard/amenities/${task.id}`}
+              href={`/admin-dashboard/calendar/edit/${task.id}`}
               className="flex w-full"
             >
               <Edit className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
@@ -100,7 +100,7 @@ export function DataTableRowActions<TData>({
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone. This will permanently delete your
-              amenities and remove your data from our servers.
+              available days and remove your data from our servers.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

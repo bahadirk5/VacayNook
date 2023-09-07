@@ -4,12 +4,13 @@ import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
 import getCurrentUser from "@/lib/session"
 import { AvailabilityCalendar } from "@/components/availability-calendar"
-import { DataTable } from "@/components/data-table"
+
 import { DashboardHeader } from "@/components/header"
 import { OpenDaysModal } from "@/components/open-days-modal"
 import { DashboardShell } from "@/components/shell"
 
 import { columns } from "../components/columns"
+import { DataTable } from "../components/data-table"
 
 interface CalendarProps {
   params: { listingId: string }

@@ -14,7 +14,7 @@ export function Categories({ categories }: CategoriesProps) {
   const category = params?.get("category")
 
   return (
-    <div className="container">
+    <>
       <div className="flex flex-row items-center justify-between overflow-x-auto pt-4">
         {categories.map((item) => (
           <CategoryBox
@@ -25,6 +25,6 @@ export function Categories({ categories }: CategoriesProps) {
           />
         ))}
       </div>
-    </div>
+    </>
   )
 }
