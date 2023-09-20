@@ -15,6 +15,7 @@ interface HomeProps {
 }
 
 export default async function IndexPage({ searchParams }: HomeProps) {
+  const heroSection = await db.heroSection.findFirst()
   const listings = await getListings(searchParams)
   const categories = await db.category.findMany()
 
@@ -23,28 +24,30 @@ export default async function IndexPage({ searchParams }: HomeProps) {
       <section className="container mx-auto grid space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:grid-cols-12 lg:gap-8 lg:py-16 xl:gap-10">
         <div className="mr-auto place-self-center lg:col-span-7">
           <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
-            Taxing Laughter: The Joke Tax Chronicles
+            {heroSection?.title}
           </h1>
           <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
-            Once upon a time, in a far-off land, there was a very lazy king who
-            spent all day lounging on his throne. One day, his advisors came to
-            him with a problem: the kingdom was running out of money.
+            {heroSection?.description}
           </p>
         </div>
         <div className="hidden lg:col-span-5 lg:mt-0 lg:flex">
-          <Image
-            src="/hero2.png"
-            priority
-            width={1000}
-            height={1000}
-            quality={100}
-            className="pointer-events-none select-none rounded-md"
-            alt="hero section photo"
-            style={{ objectFit: "cover", objectPosition: "75%" }}
-          />
+          {heroSection?.url ? (
+            <Image
+              src={heroSection.url}
+              priority
+              width={400}
+              height={400}
+              quality={100}
+              className="pointer-events-none select-none rounded-md"
+              alt="hero section photo"
+              style={{ objectFit: "cover", objectPosition: "75%" }}
+            />
+          ) : (
+            <></>
+          )}
         </div>
       </section>
-      <div className="container rounded-md bg-secondary py-8 dark:bg-transparent md:py-12 lg:py-24">
+      <div className="container rounded-md py-8 dark:bg-transparent md:py-12 lg:py-6">
         <h2 className="mt-10 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
           Suggestions for discovery
         </h2>

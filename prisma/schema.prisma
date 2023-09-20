@@ -103,12 +103,13 @@ model Listing {
 }
 
 model Reservation {
-  id        String   @id @default(cuid())
-  isPaid    Boolean  @default(false)
-  to        DateTime
+  id        String            @id @default(cuid())
+  isPaid    Boolean           @default(false)
   from      DateTime
+  to        DateTime
   guests    Int
   infants   Int
+  satus     ReservationStatus
   userId    String
   listingId String
 
@@ -171,6 +172,14 @@ model Amenities {
   listing Listing[]
 }
 
+model HeroSection {
+  id          String @id @default(cuid())
+  title       String
+  description String @db.Text
+  url         String @unique
+  publicId    String @unique
+}
+
 enum UserRole {
   ADMIN
   USER
@@ -181,4 +190,9 @@ enum AmenitiesTitles {
   FEATURES
   SAFETY
   LOCATION
+}
+
+enum ReservationStatus {
+  CONFIRM
+  REJECT
 }

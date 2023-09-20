@@ -68,6 +68,9 @@ export function UserAccountNav({ currentUser }: NavbarProps) {
                   <Link href="/admin-dashboard/amenities">Amenities</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
+                  <Link href="/admin-dashboard/hero-section">Hero Section</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
                   <Link href="/admin-dashboard/settings">Settings</Link>
                 </DropdownMenuItem>
               </>
