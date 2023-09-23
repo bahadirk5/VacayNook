@@ -104,12 +104,15 @@ model Listing {
 
 model Reservation {
   id        String            @id @default(cuid())
-  isPaid    Boolean           @default(false)
-  from      DateTime
-  to        DateTime
-  guests    Int
+  adults    Int
+  children  Int
   infants   Int
-  satus     ReservationStatus
+  from      String
+  to        String
+  contact   String
+  isPaid    Boolean           @default(false)
+  satus     ReservationStatus @default(PENDING)
+  createdAt DateTime          @default(now()) @map(name: "created_at")
   userId    String
   listingId String
 
@@ -195,4 +198,5 @@ enum AmenitiesTitles {
 enum ReservationStatus {
   CONFIRM
   REJECT
+  PENDING
 }

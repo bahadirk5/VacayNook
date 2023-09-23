@@ -6,7 +6,7 @@ import { format } from "date-fns"
 
 import { db } from "@/lib/db"
 import { cn } from "@/lib/utils"
-import { Button, buttonVariants } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Icons } from "@/components/icons"
-import { SendRequest } from "@/components/send-request"
+import { ReservationForm } from "@/components/reservation-form"
 import { UpdateDateModal } from "@/components/update-date-modal"
 import { UpdateGuestModal } from "@/components/update-guest-modal"
 
@@ -122,7 +122,16 @@ export default async function Reservation({ searchParams }: ReservationProps) {
             />
           </div>
           <Separator className="my-10" />
-          <SendRequest />
+          <div className="grid w-full max-w-sm items-center gap-1.5">
+            <ReservationForm
+              adults={Number(searchParams.adults)}
+              children={Number(searchParams.children)}
+              infants={Number(searchParams.infants)}
+              from={searchParams.from}
+              to={searchParams.to}
+              listingId={searchParams.listingId}
+            />
+          </div>
         </div>
         <div className="flex justify-end">
           <Card className="max-w-md">
