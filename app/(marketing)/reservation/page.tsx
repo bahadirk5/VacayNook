@@ -133,7 +133,7 @@ export default async function Reservation({ searchParams }: ReservationProps) {
             />
           </div>
         </div>
-        <div className="flex justify-end">
+        <div className="flex justify-end mt-5 md:mt-0">
           <Card className="max-w-md">
             <CardHeader>
               <div className="flex gap-4">
