@@ -125,7 +125,7 @@ export default async function Reservation({ searchParams }: ReservationProps) {
           <div className="grid w-full max-w-sm items-center gap-1.5">
             <ReservationForm
               adults={Number(searchParams.adults)}
-              children={Number(searchParams.children)}
+              childrn={Number(searchParams.children)}
               infants={Number(searchParams.infants)}
               from={searchParams.from}
               to={searchParams.to}

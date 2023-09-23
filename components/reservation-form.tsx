@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import axios from "axios"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 
@@ -28,7 +27,7 @@ type reservationFormValues = z.infer<typeof reservationFormSchema>
 
 interface ReservationFormProps {
   adults: number
-  children: number
+  childrn: number
   infants: number
   from: Date
   to: Date
@@ -37,7 +36,7 @@ interface ReservationFormProps {
 
 export function ReservationForm({
   adults,
-  children,
+  childrn,
   infants,
   from,
   to,
@@ -61,7 +60,7 @@ export function ReservationForm({
         },
         body: JSON.stringify({
           adults,
-          children,
+          children: childrn,
           infants,
           from,
           to,
