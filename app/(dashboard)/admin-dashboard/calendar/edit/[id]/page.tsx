@@ -1,8 +1,6 @@
-import { notFound, redirect } from "next/navigation"
+import { notFound } from "next/navigation"
 
-import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
-import getCurrentUser from "@/lib/session"
 
 import { AvailabilityCalendar } from "./components/availability-calendar"
 
@@ -19,12 +17,6 @@ async function getAvailableDays(id: string) {
 }
 
 export default async function availableDaysEdit({ params }: CalendarProps) {
-  const user = await getCurrentUser()
-
-  if (!user) {
-    redirect(authOptions?.pages?.signIn || "/login")
-  }
-
   const availableDays = await getAvailableDays(params.id)
 
   if (!availableDays) {

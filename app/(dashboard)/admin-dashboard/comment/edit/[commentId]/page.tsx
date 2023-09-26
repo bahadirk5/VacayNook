@@ -1,9 +1,7 @@
-import { notFound, redirect } from "next/navigation"
+import { notFound } from "next/navigation"
 import { Category } from "@prisma/client"
 
-import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
-import getCurrentUser from "@/lib/session"
 import { CommentEdit } from "@/components/comment-edit"
 
 async function getCategory(commentId: Category["id"]) {
@@ -19,12 +17,6 @@ interface UpdateCategoryProps {
 }
 
 export default async function UpdateCategory({ params }: UpdateCategoryProps) {
-  const user = await getCurrentUser()
-
-  if (!user) {
-    redirect(authOptions?.pages?.signIn || "/login")
-  }
-
   const comment = await getCategory(params.commentId)
 
   if (!comment) {

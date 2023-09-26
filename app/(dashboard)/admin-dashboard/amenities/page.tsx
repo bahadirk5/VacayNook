@@ -1,8 +1,4 @@
-import { redirect } from "next/navigation"
-
-import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
-import getCurrentUser from "@/lib/session"
 import { AmenitiesModal } from "@/components/amenities-modal"
 import { DataTable } from "@/components/data-table"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
@@ -16,11 +12,6 @@ export const metadata = {
 }
 
 export default async function Amenities() {
-  const user = await getCurrentUser()
-
-  if (!user) {
-    redirect(authOptions?.pages?.signIn || "/login")
-  }
   const amenities = await db.amenities.findMany()
 
   return (

@@ -1,8 +1,4 @@
-import { redirect } from "next/navigation"
-
-import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
-import getCurrentUser from "@/lib/session"
 import { CommentItem } from "@/components/comment-item"
 import { CommentModal } from "@/components/comment-modal"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
@@ -22,12 +18,6 @@ interface CommentParams {
 }
 
 export default async function Comment({ params }: CommentParams) {
-  const user = await getCurrentUser()
-
-  if (!user) {
-    redirect(authOptions?.pages?.signIn || "/login")
-  }
-
   const comments = await getComments(params.listingId)
 
   return (

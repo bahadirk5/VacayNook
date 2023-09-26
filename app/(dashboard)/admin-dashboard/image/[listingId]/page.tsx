@@ -1,10 +1,6 @@
-import { redirect } from "next/navigation"
 import { Listing } from "@prisma/client"
-import { useRouter } from "next/navigation"
 
-import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
-import getCurrentUser from "@/lib/session"
 import { ImageCard } from "@/components/image-card"
 import { ImageUpload } from "@/components/image-upload"
 
@@ -33,12 +29,6 @@ interface ListingImageProps {
 }
 
 export default async function ListingImage({ params }: ListingImageProps) {
-  const user = await getCurrentUser()
-
-  if (!user) {
-    redirect(authOptions?.pages?.signIn || "/login")
-  }
-
   const listingImage = await getListing(params.listingId)
 
   return (

@@ -1,8 +1,4 @@
-import { redirect } from "next/navigation"
-
-import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
-import getCurrentUser from "@/lib/session"
 import { CategoryItem } from "@/components/category-item"
 import { CategoryModal } from "@/components/category-modal"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
@@ -14,11 +10,6 @@ export const metadata = {
 }
 
 export default async function Category() {
-  const user = await getCurrentUser()
-
-  if (!user) {
-    redirect(authOptions?.pages?.signIn || "/login")
-  }
   const categories = await db.category.findMany()
 
   return (

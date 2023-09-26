@@ -1,9 +1,6 @@
 import Link from "next/link"
-import { redirect } from "next/navigation"
 
-import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
-import getCurrentUser from "@/lib/session"
 import { buttonVariants } from "@/components/ui/button"
 import { DataTable } from "@/components/data-table"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
@@ -18,12 +15,6 @@ export const metadata = {
 }
 
 export default async function DashboardPage() {
-  const user = await getCurrentUser()
-
-  if (!user) {
-    redirect(authOptions?.pages?.signIn || "/login")
-  }
-
   const listing = await db.listing.findMany({
     select: {
       id: true,
@@ -46,7 +37,7 @@ export default async function DashboardPage() {
           <Icons.add className="mr-2 h-4 w-4" /> New post
         </Link>
       </DashboardHeader>
-      <div>
+      <div className="overflow-x-auto">
         {listing?.length ? (
           <DataTable columns={columns} data={listing} />
         ) : (

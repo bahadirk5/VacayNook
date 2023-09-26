@@ -111,7 +111,7 @@ model Reservation {
   to        String
   contact   String
   isPaid    Boolean           @default(false)
-  satus     ReservationStatus @default(PENDING)
+  status    ReservationStatus @default(PENDING)
   createdAt DateTime          @default(now()) @map(name: "created_at")
   userId    String
   listingId String

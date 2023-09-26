@@ -59,6 +59,9 @@ export function UserAccountNav({ currentUser }: NavbarProps) {
             {currentUser.role === "ADMIN" ? (
               <>
                 <DropdownMenuItem asChild>
+                  <Link href="/admin-dashboard/reservations">Reservations</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
                   <Link href="/admin-dashboard">Dashboard</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>

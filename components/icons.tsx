@@ -1,6 +1,7 @@
 import {
   AirVent,
   ArrowRight,
+  CalendarCheck,
   ChevronLeft,
   ChevronRight,
   Command,
@@ -9,6 +10,7 @@ import {
   Heart,
   Home,
   Laptop,
+  LayoutTemplate,
   Loader2,
   LucideProps,
   Moon,
@@ -20,7 +22,6 @@ import {
   Trash,
   Twitter,
   User,
-  LayoutTemplate,
   type Icon as LucideIcon,
 } from "lucide-react"
 
@@ -47,7 +48,8 @@ export const Icons = {
   ellipsis: MoreVertical,
   trash: Trash,
   AirVent: AirVent,
-  LayoutTemplate:LayoutTemplate ,
+  CalendarCheck: CalendarCheck,
+  LayoutTemplate: LayoutTemplate,
   gitHub: (props: LucideProps) => (
     <svg viewBox="0 0 438.549 438.549" {...props}>
       <path

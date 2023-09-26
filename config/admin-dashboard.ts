@@ -4,6 +4,11 @@ export const adminDashboardConfig: DashboardConfig = {
   mainNav: [],
   sidebarNav: [
     {
+      title: "Reservations",
+      href: "/admin-dashboard/reservations",
+      icon: "CalendarCheck",
+    },
+    {
       title: "Posts",
       href: "/admin-dashboard",
       icon: "post",
