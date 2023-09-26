@@ -52,12 +52,35 @@ interface DataTableRowActionsProps<TData> {
 export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
+  const router = useRouter()
   const [showDetailDialog, setShowDetailDialog] = React.useState<boolean>(false)
 
   const reservation = row.original as Reservations
 
   const to = format(new Date(reservation.to), "PPP")
   const from = format(new Date(reservation.from), "PPP")
+
+  async function handleStatusChange(e: string) {
+    const response = await fetch(`/api/reservation/status/${reservation.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        status: e,
+      }),
+    })
+
+    if (!response?.ok) {
+      toast({
+        title: "Something went wrong.",
+        description: "Please try again.",
+        variant: "destructive",
+      })
+    }
+
+    router.refresh()
+  } 
 
   return (
     <>
@@ -82,6 +105,28 @@ export function DataTableRowActions<TData>({
             <FileSearch className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
             Details
           </DropdownMenuItem>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>
+              <Activity className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+              Publish
+            </DropdownMenuSubTrigger>
+            <DropdownMenuPortal>
+              <DropdownMenuSubContent>
+                <DropdownMenuRadioGroup
+                  value={reservation.status}
+                  onValueChange={handleStatusChange}
+                >
+                  <DropdownMenuRadioItem value="CONFIRM">
+                    Confirm
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuRadioItem value="REJECT">
+                    Reject
+                  </DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
+              </DropdownMenuSubContent>
+            </DropdownMenuPortal>
+          </DropdownMenuSub>
         </DropdownMenuContent>
       </DropdownMenu>
       <Dialog open={showDetailDialog} onOpenChange={setShowDetailDialog}>
