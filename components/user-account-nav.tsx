@@ -80,7 +80,9 @@ export function UserAccountNav({ currentUser }: NavbarProps) {
             ) : (
               <>
                 <DropdownMenuItem asChild>
-                  <Link href="/user-dashboard">Dashboard</Link>
+                  <Link href="/user-dashboard/reservations">
+                    My reservations
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/user-dashboard/settings">Settings</Link>

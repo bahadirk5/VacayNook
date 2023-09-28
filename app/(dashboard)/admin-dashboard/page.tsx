@@ -37,7 +37,7 @@ export default async function DashboardPage() {
           <Icons.add className="mr-2 h-4 w-4" /> New post
         </Link>
       </DashboardHeader>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto p-2">
         {listing?.length ? (
           <DataTable columns={columns} data={listing} />
         ) : (
